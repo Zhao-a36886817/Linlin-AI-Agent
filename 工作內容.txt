@@ -1,0 +1,72 @@
+我們接下來的開發規劃
+✅ Block 3：Security & Credential Manager
+會包含：
+Windows Credential Manager (keyring)
+Session Credential
+Credential Store
+Credential API
+Provider Service 整合
+Frontend API
+測試程式
+Block 4：Model Provider Manager
+支援：
+Ollama（免金鑰）
+NVIDIA API
+Gemini
+Groq
+OpenAI
+Anthropic
+OpenRouter
+DeepSeek
+自訂 OpenAI Compatible API
+Block 5：Agent Runtime
+支援：
+多 Agent
+Planner
+Executor
+Reviewer
+Tool Calling
+並行 4～8 個模型
+Block 6：Workspace
+支援：
+ZIP
+PDF
+Word
+Excel
+圖片
+音訊
+程式碼
+專案目錄
+Block 7：桌面 UI
+包含：
+Dashboard
+Providers
+Models
+Agent
+Workflow
+Chat
+Files
+Logs
+Settings
+我建議改成 Work Mode 開發
+你的 Linlin Agent 已經不是小專案了。
+依照目前規模：
+FastAPI
+React
+Tauri
+Provider Manager
+Credential Manager
+Multi-Agent
+Workflow
+MCP
+RAG
+Plugin
+Memory
+Scheduler
+最後大約會有：
+100+ Python 檔
+50+ TypeScript 檔
+30+ PowerShell 腳本
+數萬行程式碼
+這已經超過聊天視窗適合直接貼完整程式碼的範圍。
+建議切換到 Work Mode，我可以直接持續建立與修改整個專案結構、產生完整檔案與腳本，而不是把大型程式拆成很多段貼在聊天裡。這樣最符合你想打造完整 Linlin Agent 的開發方式，也能避免之前遇到的腳本截斷問題。

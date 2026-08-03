@@ -1,0 +1,44 @@
+﻿# Secrets
+.env
+.env.*
+!.env.example
+
+# Conda
+.conda/
+conda-bld/
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Node
+node_modules/
+.pnpm-store/
+dist/
+
+# Rust / Tauri
+target/
+desktop/src-tauri/target/
+
+# Runtime data
+workspace/*
+!workspace/.gitkeep
+outputs/*
+!outputs/.gitkeep
+logs/*
+!logs/.gitkeep
+data/*
+!data/.gitkeep
+
+# IDE
+.vscode/settings.json
+.idea/
+
+# Windows
+Thumbs.db
+Desktop.ini
