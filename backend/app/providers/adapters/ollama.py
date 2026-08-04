@@ -7,6 +7,7 @@ from typing import Any, Self
 import httpx
 
 from app.providers.adapters.base import BaseProvider
+from app.providers.tool_parser import ToolParser
 
 
 class OllamaProvider(BaseProvider):
@@ -108,11 +109,26 @@ class OllamaProvider(BaseProvider):
         payload.update(kwargs)
         payload["stream"] = False
 
+        from pprint import pprint
+
+        print("\n" + "=" * 80)
+        print("OLLAMA PAYLOAD")
+        print("=" * 80)
+        pprint(payload, width=120)
+        print("=" * 80 + "\n")
+
         raw = await self._request(
             "POST",
             "/api/chat",
             payload,
         )
+
+        print("=" * 80)
+        print("OLLAMA RAW RESPONSE")
+        from pprint import pprint
+
+        pprint(raw, width=120)
+        print("=" * 80)
 
         message = raw.get("message", {})
 
@@ -132,7 +148,7 @@ class OllamaProvider(BaseProvider):
             "role": str(message.get("role", "assistant")),
             "content": str(message.get("content", "")),
             "thinking": message.get("thinking"),
-            "tool_calls": message.get("tool_calls", []),
+            "tool_calls": ToolParser.parse(raw),
             "done": bool(raw.get("done", False)),
             "done_reason": raw.get("done_reason"),
             "usage": {
@@ -208,10 +224,7 @@ class OllamaProvider(BaseProvider):
                             message.get("content", ""),
                         ),
                         "thinking": message.get("thinking"),
-                        "tool_calls": message.get(
-                            "tool_calls",
-                            [],
-                        ),
+                        "tool_calls": ToolParser.parse(raw),
                         "done": bool(raw.get("done", False)),
                         "done_reason": raw.get("done_reason"),
                         "usage": {
