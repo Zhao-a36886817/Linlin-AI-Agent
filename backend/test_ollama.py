@@ -8,12 +8,7 @@ async def main():
 
     response = await provider.chat(
         model="qwen3:4b",
-        messages=[
-            {
-                "role": "user",
-                "content": "請用一句話介紹你自己。"
-            }
-        ],
+        messages=[{"role": "user", "content": "請用一句話介紹你自己。"}],
     )
 
     print()

@@ -1,6 +1,5 @@
 import asyncio
 
-import app.providers.adapters
 from app.providers.factory import ProviderFactory
 
 

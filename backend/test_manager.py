@@ -1,7 +1,5 @@
 import asyncio
 
-import app.providers.adapters
-
 from app.providers.manager import provider_manager
 
 
@@ -18,7 +16,6 @@ async def main():
     )
 
     for model in models:
-
         print(model["name"])
 
     await provider_manager.close()

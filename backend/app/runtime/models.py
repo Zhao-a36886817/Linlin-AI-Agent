@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import app.providers.adapters
 from fastapi import APIRouter
 
 from app.providers.manager import provider_manager
@@ -23,7 +22,6 @@ async def list_models() -> ModelListResponse:
     items: list[ModelInfo] = []
 
     for model in models:
-
         details = model.get("details", {})
 
         items.append(

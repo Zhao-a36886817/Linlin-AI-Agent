@@ -1,11 +1,9 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
-import app.providers.adapters
 from fastapi import APIRouter, HTTPException, status
 
 from app.providers.manager import provider_manager
 from app.schemas.models import ModelInfo, ModelListResponse
-
 
 router = APIRouter(
     prefix="/models",
@@ -54,10 +52,7 @@ async def list_models() -> ModelListResponse:
                 quantization=details.get("quantization_level"),
                 context_length=details.get("context_length"),
                 embedding_length=details.get("embedding_length"),
-                capabilities=[
-                    str(capability)
-                    for capability in capabilities
-                ],
+                capabilities=[str(capability) for capability in capabilities],
             ),
         )
 
