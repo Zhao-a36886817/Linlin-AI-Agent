@@ -20,7 +20,16 @@ class Settings(BaseSettings):
 
     linlin_backend_host: str = "127.0.0.1"
     linlin_backend_port: int = 8000
-    linlin_frontend_origin: str = "http://localhost:1420"
+    linlin_frontend_origins: list[str] = [
+        "http://localhost:5173",
+        "http://localhost:5174",
+        "http://127.0.0.1:5173",
+        "http://127.0.0.1:5174",
+        "http://localhost:1420",
+        "http://127.0.0.1:1420",
+        "tauri://localhost",
+        "https://tauri.localhost",
+    ]
 
     max_parallel_agents: int = 4
 

@@ -1,0 +1,114 @@
+.app {
+
+    width:800px;
+    margin:30px auto;
+    font-family:
+    Arial,
+    sans-serif;
+
+}
+
+
+.panel {
+
+    padding:15px;
+
+    background:#eee;
+
+    border-radius:10px;
+
+    margin-bottom:20px;
+
+}
+
+
+
+.chatbox {
+
+    border:1px solid #ccc;
+
+    border-radius:12px;
+
+    height:500px;
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+
+
+.messages {
+
+    flex:1;
+
+    overflow:auto;
+
+    padding:15px;
+
+}
+
+
+
+.message {
+
+    margin-bottom:15px;
+
+    padding:10px;
+
+    border-radius:10px;
+
+}
+
+
+
+.message.user {
+
+    background:#d9ecff;
+
+}
+
+
+
+.message.assistant {
+
+    background:#e8ffe0;
+
+}
+
+
+
+.role {
+
+    font-weight:bold;
+
+}
+
+
+
+.input-area {
+
+    display:flex;
+
+    padding:10px;
+
+}
+
+
+
+.input-area input {
+
+    flex:1;
+
+    padding:10px;
+
+}
+
+
+
+.input-area button {
+
+    width:100px;
+
+}
