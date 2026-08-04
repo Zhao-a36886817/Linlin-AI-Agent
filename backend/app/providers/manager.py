@@ -1,66 +1,77 @@
 from __future__ import annotations
 
+from collections.abc import AsyncIterator
 from typing import Any
 
+from app.providers.adapters.base import BaseProvider
 from app.providers.factory import ProviderFactory
 
 
 class ProviderManager:
-    """
-    Central runtime for every Provider.
-
-    Frontend、Agent、API
-    全部只跟這個類別溝通。
-    """
+    """Manage reusable provider instances."""
 
     def __init__(self) -> None:
-        self._instances: dict[str, Any] = {}
+        self._instances: dict[str, BaseProvider] = {}
 
-    def provider(
-        self,
-        name: str,
-    ):
+    def provider(self, name: str) -> BaseProvider:
+        normalized_name = name.strip().lower()
 
-        key = name.lower()
+        if not normalized_name:
+            raise ValueError("Provider name cannot be empty.")
 
-        if key not in self._instances:
-            self._instances[key] = ProviderFactory.create(key)
+        if normalized_name not in self._instances:
+            self._instances[normalized_name] = ProviderFactory.create(
+                normalized_name,
+            )
 
-        return self._instances[key]
+        return self._instances[normalized_name]
 
-    async def health(
-        self,
-        provider: str,
-    ) -> bool:
-
+    async def health(self, provider: str) -> bool:
         return await self.provider(provider).health()
 
     async def list_models(
         self,
         provider: str,
-    ) -> list[dict]:
-
+    ) -> list[dict[str, Any]]:
         return await self.provider(provider).list_models()
 
     async def chat(
         self,
         provider: str,
         model: str,
-        messages: list[dict],
-        **kwargs,
-    ):
-
+        messages: list[dict[str, Any]],
+        **kwargs: Any,
+    ) -> dict[str, Any]:
         return await self.provider(provider).chat(
             model=model,
             messages=messages,
             **kwargs,
         )
 
-    async def close(self) -> None:
+    async def stream(
+        self,
+        provider: str,
+        model: str,
+        messages: list[dict[str, Any]],
+        **kwargs: Any,
+    ) -> AsyncIterator[dict[str, Any]]:
+        instance = self.provider(provider)
 
+        if not instance.supports_stream:
+            raise RuntimeError(
+                f"Provider '{provider}' does not support streaming.",
+            )
+
+        async for event in instance.stream(
+            model=model,
+            messages=messages,
+            **kwargs,
+        ):
+            yield event
+
+    async def close(self) -> None:
         for provider in self._instances.values():
-            if hasattr(provider, "close"):
-                await provider.close()
+            await provider.close()
 
         self._instances.clear()
 
