@@ -39,6 +39,8 @@ class ChatRequest(BaseModel):
     messages: list[ChatMessage] = Field(min_length=1)
     options: ChatOptions = Field(default_factory=ChatOptions)
 
+    tools_enabled: bool = True
+
     @field_validator("provider", "model")
     @classmethod
     def validate_identifier(cls, value: str) -> str:

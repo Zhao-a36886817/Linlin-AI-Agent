@@ -3,12 +3,19 @@ from __future__ import annotations
 from collections.abc import AsyncIterator
 from typing import Any
 
+from app.agents.tool_loop import ToolLoop
 from app.providers.manager import provider_manager
 from app.schemas.chat import (
     ChatRequest,
     ChatResponse,
     ChatStreamEvent,
     ChatUsage,
+)
+from app.tools import tool_manager
+
+tool_loop = ToolLoop(
+    provider_manager=provider_manager,
+    tool_manager=tool_manager,
 )
 
 
@@ -62,12 +69,22 @@ class ChatService:
         )
 
     async def chat(self, request: ChatRequest) -> ChatResponse:
-        raw = await provider_manager.chat(
-            provider=request.provider,
-            model=request.model,
-            messages=self._messages(request),
-            **self._build_provider_options(request),
-        )
+        provider_options = self._build_provider_options(request)
+
+        if request.tools_enabled:
+            raw = await tool_loop.run(
+                provider=request.provider,
+                model=request.model,
+                messages=self._messages(request),
+                provider_options=provider_options,
+            )
+        else:
+            raw = await provider_manager.chat(
+                provider=request.provider,
+                model=request.model,
+                messages=self._messages(request),
+                **provider_options,
+            )
 
         if not isinstance(raw, dict):
             raise TypeError("Provider returned an invalid chat response.")
