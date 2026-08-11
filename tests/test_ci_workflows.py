@@ -35,7 +35,9 @@ def test_release_is_manual_gated_and_never_logs_signing_secrets() -> None:
     text = workflow("release.yml")
     assert "workflow_dispatch:" in text
     assert "environment: production" in text
-    assert "inputs.promotion == 'PROMOTE'" in text
+    assert "inputs.evidence_confirmation == 'GENERATE_EVIDENCE'" in text
+    assert "does not approve or publish the RC" in text
+    assert "inputs.promotion == 'PROMOTE'" not in text
     assert "TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}" in text
     assert "TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}" in text
     assert not re.search(r"(?:echo|Write-Output).*TAURI_SIGNING", text, re.IGNORECASE)

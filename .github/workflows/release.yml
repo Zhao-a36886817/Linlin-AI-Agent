@@ -1,4 +1,4 @@
-name: Release Candidate
+name: Release Candidate Evidence
 
 on:
   workflow_dispatch:
@@ -7,8 +7,8 @@ on:
         description: Reviewed semantic version
         required: true
         type: string
-      promotion:
-        description: Type PROMOTE after review
+      evidence_confirmation:
+        description: Type GENERATE_EVIDENCE; this builds evidence but does not approve or publish the RC
         required: true
         type: string
 
@@ -25,7 +25,7 @@ concurrency:
 
 jobs:
   signed-candidate:
-    if: inputs.promotion == 'PROMOTE'
+    if: inputs.evidence_confirmation == 'GENERATE_EVIDENCE'
     environment: production
     strategy:
       fail-fast: false
@@ -111,7 +111,7 @@ jobs:
           retention-days: 14
 
   aggregate-evidence:
-    if: inputs.promotion == 'PROMOTE'
+    if: inputs.evidence_confirmation == 'GENERATE_EVIDENCE'
     needs: signed-candidate
     runs-on: ubuntu-latest
     permissions:
