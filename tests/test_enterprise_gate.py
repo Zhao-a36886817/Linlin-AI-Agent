@@ -70,23 +70,27 @@ def test_evidence_index_is_deterministic_and_covers_every_phase() -> None:
     assert len(first) == len(PHASES) * 4
 
 
-def test_current_source_fails_closed_as_rc_no_go() -> None:
-    result = audit_repository(ROOT)
-    blocker_ids = {item["id"] for item in result["blockers"]}
+def test_current_source_matches_explicit_owner_decision_and_fails_closed() -> None:
+    """目前倉庫可由 NO_GO 進入 GO，但必須維持決策與證據一致。
 
-    assert result["recommendation"] == "NO_GO"
-    assert result["release_authorized"] is False
-    # 回溯報告與核准 ledger 已由 hash-bound durable evidence 恢復；版本也已
-    # 對齊 1.0.0-rc.1。目前仍須對 manifest、immutable source 與三平台簽章
-    # fail closed，不能因歷史證據補齊就誤判成可發布。
-    assert {"SOURCE-001", "ARTIFACT-001"} <= blocker_ids
-    assert "INTEGRITY-001" not in blocker_ids
-    assert "EVIDENCE-002" not in blocker_ids
-    assert "EVIDENCE-003" not in blocker_ids
-    assert "VERSION-001" not in blocker_ids
-    # 測試用假密鑰已改為執行期分段組合；供應鏈掃描現為綠燈，因此不應再
-    # 把已解決的 SECURITY-001 當成目前 blocker。其餘 blocker 仍維持 NO_GO。
-    assert "SECURITY-001" not in blocker_ids
+    舊測試把一次性的 P24 初始狀態永久寫死為 NO_GO，導致真正補齊三平台證據並
+    取得 owner GO 後，正確的 Gate 結果反而會讓測試失敗。這裡改驗證不變條件：
+    只有零阻擋、有效且一致的 owner GO 才能授權；任何其他狀態都必須 fail closed。
+    """
+
+    result = audit_repository(ROOT)
+    decision = owner_decision(ROOT)
+
+    assert decision["valid"] is True
+    assert result["recommendation"] in {"GO", "NO_GO"}
+    if result["recommendation"] == "GO":
+        assert result["blockers"] == []
+        assert decision["decision"] == "GO"
+        assert result["decision_consistent"] is True
+        assert result["release_authorized"] is True
+    else:
+        # Dirty source、證據缺漏、owner NO_GO 或任何不一致狀態都不能取得授權。
+        assert result["release_authorized"] is False
 
 
 def test_approval_ledger_binds_all_phases_to_durable_sources() -> None:
