@@ -16,19 +16,37 @@ locked on Windows. The local npm audit cache uses the same ignored cache boundar
 so the audit does not depend on a writable user-profile cache. These local
 reliability settings do not change the CI audit or release workflows.
 
-Release candidates are manual-only. The operator must type `PROMOTE`, and the job
-uses a protected `production` GitHub Environment so repository administrators can
-require reviewers. Tauri signing values exist only as environment secrets and are
-never command arguments or output. Each native bundle receives a GitHub/Sigstore
-attestation binding it to repository, workflow and commit identity. No workflow
-automatically publishes a production release.
+Release-candidate evidence is manual-only. The operator must type
+`GENERATE_EVIDENCE`, and the job uses a protected `production` GitHub Environment
+so repository administrators can require reviewers. This confirmation only permits
+evidence generation: it is not P24 approval and it never publishes a release.
+Tauri signing values exist only as environment secrets and are never command
+arguments or output.
+
+Each runner first creates a deterministic SHA-256 manifest for every file in its
+native bundle. The workflow signs that manifest through the free Sigstore public
+good service, using GitHub Actions OIDC, then immediately verifies the exact
+workflow certificate identity, GitHub OIDC issuer and Rekor transparency entry.
+The Sigstore Action is pinned to a full commit SHA. This route supports private
+personal repositories without granting `attestations: write` or making the source
+repository public. Rekor is intentionally a public, append-only transparency log;
+it records the signing identity and cryptographic material, not the private source
+tree or native installer contents.
+
+Windows RC evidence uses the NSIS installer target because MSI/WiX rejects semantic
+versions with a textual pre-release identifier such as `1.0.0-rc.1`. Linux produces
+DEB and AppImage bundles; macOS produces app and DMG bundles. Selecting NSIS avoids
+rewriting the reviewed version merely to satisfy MSI packaging rules.
 
 ## Verification and compromise drill
 
-Before promotion, verify the P20 Ed25519 metadata/package signature, compare the
-bundle SHA-256 with provenance, inspect the SBOM, and run `gh attestation verify`
-against the repository owner. A compromise drill changes one copied artifact byte
-and confirms both local provenance comparison and signature verification reject it.
+Before any later promotion, verify the P20 Ed25519 metadata/package signature,
+compare every bundle SHA-256 with the signed subject and aggregate provenance,
+inspect the SBOM, and verify each `.sigstore.json` bundle against the certificate
+identity `https://github.com/<owner>/<repository>/.github/workflows/release.yml@refs/heads/main`
+and issuer `https://token.actions.githubusercontent.com`. A compromise drill changes
+one copied artifact byte and confirms both local provenance comparison and Sigstore
+identity verification reject it.
 
 If a signing key, runner or dependency is suspected compromised: disable the
 production Environment, revoke/rotate the signing secret, stop promotion, retain

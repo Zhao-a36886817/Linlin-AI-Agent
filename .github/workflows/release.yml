@@ -16,8 +16,6 @@ permissions:
   actions: read
   contents: read
   id-token: write
-  attestations: write
-  artifact-metadata: write
 
 concurrency:
   group: production-release
@@ -33,10 +31,15 @@ jobs:
         include:
           - os: ubuntu-latest
             artifact: linux
+            bundles: "deb appimage"
           - os: windows-latest
             artifact: windows
+            # MSI/WiX 不接受 `rc` 文字預發行段；NSIS 可保留正式來源版本
+            # 1.0.0-rc.N，不需要為打包偷偷改寫版本號。
+            bundles: "nsis"
           - os: macos-latest
             artifact: macos
+            bundles: "app dmg"
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
@@ -60,12 +63,19 @@ jobs:
       - name: Validate source before signing
         run: python scripts/supply_chain.py scan
       - name: Build signed native candidate
-        run: pnpm --dir desktop exec tauri build
+        run: pnpm --dir desktop exec tauri build --bundles ${{ matrix.bundles }}
         env:
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
       - name: Generate SBOM
         run: python scripts/supply_chain.py sbom --output desktop/src-tauri/target/release/bundle/sbom.cdx.json
+      # 簽署逐檔 SHA-256 清單，而不是只簽一個未解釋的壓縮檔；P24 驗證器會再確認
+      # 清單內容與平台紀錄完全相同，讓每個原生成品都被同一個 workflow 身分綁定。
+      - name: Generate native bundle checksum subject
+        run: >-
+          python scripts/release_evidence.py checksums
+          --bundle desktop/src-tauri/target/release/bundle
+          --output "release-evidence/${{ matrix.artifact }}.subjects.sha256"
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         id: upload
         with:
@@ -73,23 +83,25 @@ jobs:
           path: desktop/src-tauri/target/release/bundle
           if-no-files-found: error
           retention-days: 14
-      - uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4
-        id: attest
+      # GitHub 內建 artifact attestation 不支援私人個人倉庫；改用免費 Sigstore
+      # 公益服務。Action 固定到完整 SHA，並在同一步依 OIDC 身分與 Rekor 記錄驗證。
+      - name: Sign and verify checksum subject with Sigstore
+        uses: sigstore/gh-action-sigstore-python@5b79a39c381910c090341a2c9b0bf022c8b387e1 # v3.4.0
         with:
-          subject-path: desktop/src-tauri/target/release/bundle/**
-      - name: Verify GitHub Sigstore attestation
-        run: >-
-          python scripts/release_evidence.py verify-attestation
-          --bundle desktop/src-tauri/target/release/bundle
-          --attestation "${{ steps.attest.outputs.bundle-path }}"
-          --repository "${{ github.repository }}"
+          inputs: "release-evidence/${{ matrix.artifact }}.subjects.sha256"
+          verify: true
+          verify-cert-identity: "https://github.com/${{ github.workflow_ref }}"
+          verify-oidc-issuer: "https://token.actions.githubusercontent.com"
+          upload-signing-artifacts: false
+          release-signing-artifacts: false
       - name: Record commit-bound platform evidence
         run: >-
           python scripts/release_evidence.py platform
           --root .
           --bundle desktop/src-tauri/target/release/bundle
           --output "release-evidence/${{ matrix.artifact }}.json"
-          --attestation-bundle "${{ steps.attest.outputs.bundle-path }}"
+          --attestation-bundle "release-evidence/${{ matrix.artifact }}.subjects.sha256.sigstore.json"
+          --signed-subject "release-evidence/${{ matrix.artifact }}.subjects.sha256"
           --platform "${{ matrix.artifact }}"
           --version "${{ inputs.version }}"
           --source-commit "${{ github.sha }}"
@@ -100,8 +112,6 @@ jobs:
           --artifact-name "linlin-agent-${{ inputs.version }}-${{ matrix.artifact }}"
           --artifact-id "${{ steps.upload.outputs.artifact-id }}"
           --artifact-url "${{ steps.upload.outputs.artifact-url }}"
-          --attestation-id "${{ steps.attest.outputs.attestation-id }}"
-          --attestation-url "${{ steps.attest.outputs.attestation-url }}"
       - name: Upload platform evidence
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:

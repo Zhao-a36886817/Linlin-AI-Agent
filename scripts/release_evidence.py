@@ -3,8 +3,9 @@ from __future__ import annotations
 """產生及驗證 P24 三平台原生成品證據。
 
 平台紀錄必須由同一個 GitHub Actions run 建立，並綁定完整 source commit、版本、
-artifact ID、逐檔 SHA-256 與 actions/attest 產生的 Sigstore bundle。這個模組不會
-自行宣稱簽章成功；CI 必須先以官方 `gh attestation verify` 驗證每一個 subject。
+artifact ID、逐檔 SHA-256，以及 Sigstore 公益服務產生的簽章 bundle。為了讓私人
+個人倉庫也能免費蒐證，CI 會簽署「逐檔雜湊清單」，再由官方 Sigstore action 依
+GitHub OIDC workflow 身分立即驗證；本模組則負責確認清單、成品與證據彼此一致。
 """
 
 import argparse
@@ -12,7 +13,6 @@ import hashlib
 import json
 import re
 import shutil
-import subprocess
 from pathlib import Path, PurePosixPath
 from typing import Any
 
@@ -22,6 +22,7 @@ PLATFORMS = ("windows", "linux", "macos")
 SHA256 = re.compile(r"[0-9a-f]{64}")
 COMMIT = re.compile(r"[0-9a-f]{40}")
 RC_VERSION = re.compile(r"1\.0\.0-rc\.\d+")
+SIGSTORE_OIDC_ISSUER = "https://token.actions.githubusercontent.com"
 
 
 class ReleaseEvidenceError(RuntimeError):
@@ -45,11 +46,31 @@ def source_version(root: Path) -> str:
 
     root = root.resolve()
     values = {
-        str(tomllib.loads((root / "backend/pyproject.toml").read_text(encoding="utf-8"))["project"]["version"]),
-        str(json.loads((root / "frontend/package.json").read_text(encoding="utf-8"))["version"]),
-        str(json.loads((root / "desktop/package.json").read_text(encoding="utf-8"))["version"]),
-        str(tomllib.loads((root / "desktop/src-tauri/Cargo.toml").read_text(encoding="utf-8"))["package"]["version"]),
-        str(json.loads((root / "desktop/src-tauri/tauri.conf.json").read_text(encoding="utf-8"))["version"]),
+        str(
+            tomllib.loads(
+                (root / "backend/pyproject.toml").read_text(encoding="utf-8")
+            )["project"]["version"]
+        ),
+        str(
+            json.loads((root / "frontend/package.json").read_text(encoding="utf-8"))[
+                "version"
+            ]
+        ),
+        str(
+            json.loads((root / "desktop/package.json").read_text(encoding="utf-8"))[
+                "version"
+            ]
+        ),
+        str(
+            tomllib.loads(
+                (root / "desktop/src-tauri/Cargo.toml").read_text(encoding="utf-8")
+            )["package"]["version"]
+        ),
+        str(
+            json.loads(
+                (root / "desktop/src-tauri/tauri.conf.json").read_text(encoding="utf-8")
+            )["version"]
+        ),
     }
     if len(values) != 1:
         raise ReleaseEvidenceError("Release version sources are inconsistent.")
@@ -82,17 +103,34 @@ def bundle_files(bundle: Path) -> list[dict[str, Any]]:
     return files
 
 
+def checksum_manifest(files: list[dict[str, Any]]) -> str:
+    """輸出可被 Sigstore 簽署、且跨三種 runner 都一致的 SHA-256 清單。"""
+
+    return "".join(f"{item['sha256']}  {item['path']}\n" for item in files)
+
+
+def create_checksum_manifest(bundle: Path, output: Path) -> None:
+    """在簽章前由實際原生成品產生 subject；不接受人工提供的雜湊值。"""
+
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output.write_text(
+        checksum_manifest(bundle_files(bundle)), encoding="utf-8", newline="\n"
+    )
+
+
 def _sigstore_bundle(path: Path) -> dict[str, Any]:
     try:
         document = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as error:
         raise ReleaseEvidenceError("Sigstore bundle is unreadable.") from error
-    if not isinstance(document, dict) or not {
-        "mediaType",
-        "verificationMaterial",
-        "dsseEnvelope",
-    } <= set(document):
-        raise ReleaseEvidenceError("Sigstore bundle has no signed DSSE material.")
+    required = {"mediaType", "verificationMaterial"}
+    signed_content = {"dsseEnvelope", "messageSignature"}
+    if (
+        not isinstance(document, dict)
+        or not required <= set(document)
+        or not signed_content.intersection(document)
+    ):
+        raise ReleaseEvidenceError("Sigstore bundle has no signed material.")
     return document
 
 
@@ -102,6 +140,7 @@ def create_platform_record(
     bundle: Path,
     output: Path,
     attestation_bundle: Path,
+    signed_subject: Path,
     platform: str,
     version: str,
     source_commit: str,
@@ -112,10 +151,8 @@ def create_platform_record(
     artifact_name: str,
     artifact_id: str,
     artifact_url: str,
-    attestation_id: str,
-    attestation_url: str,
 ) -> dict[str, Any]:
-    """在官方 gh 驗證完成後，建立單一平台的不可含糊證據紀錄。"""
+    """在官方 Sigstore action 驗證完成後，建立單一平台證據紀錄。"""
 
     if platform not in PLATFORMS or not COMMIT.fullmatch(source_commit):
         raise ReleaseEvidenceError("Invalid platform or source commit.")
@@ -127,13 +164,25 @@ def create_platform_record(
         raise ReleaseEvidenceError("Evidence is not from the release workflow.")
     if not run_id.isdigit() or run_attempt < 1 or not artifact_id.isdigit():
         raise ReleaseEvidenceError("Invalid workflow or artifact identity.")
-    if not attestation_id.isdigit():
-        raise ReleaseEvidenceError("Invalid GitHub attestation identity.")
     _sigstore_bundle(attestation_bundle)
 
+    files = bundle_files(bundle)
+    try:
+        subject_text = signed_subject.read_text(encoding="utf-8")
+    except OSError as error:
+        raise ReleaseEvidenceError("Signed checksum subject is unreadable.") from error
+    if subject_text != checksum_manifest(files):
+        raise ReleaseEvidenceError(
+            "Signed checksum subject does not match native bundle."
+        )
+
     output.parent.mkdir(parents=True, exist_ok=True)
-    copied_attestation = output.with_name(f"{platform}.attestation.json")
+    copied_subject = output.with_name(f"{platform}.subjects.sha256")
+    if signed_subject.resolve() != copied_subject.resolve():
+        shutil.copyfile(signed_subject, copied_subject)
+    copied_attestation = output.with_name(f"{platform}.attestation.sigstore.json")
     shutil.copyfile(attestation_bundle, copied_attestation)
+    cert_identity = f"https://github.com/{workflow_ref}"
     record = {
         "schema_version": 1,
         "evidence_type": "native-artifact",
@@ -151,39 +200,21 @@ def create_platform_record(
             "id": artifact_id,
             "url": artifact_url,
         },
-        "bundle_files": bundle_files(bundle),
+        "bundle_files": files,
         "attestation": {
-            "id": attestation_id,
-            "url": attestation_url,
+            "provider": "sigstore-public-good",
+            "certificate_identity": cert_identity,
+            "oidc_issuer": SIGSTORE_OIDC_ISSUER,
+            "signed_subject_path": copied_subject.name,
+            "signed_subject_sha256": sha256_file(copied_subject),
             "bundle_path": copied_attestation.name,
             "bundle_sha256": sha256_file(copied_attestation),
-            "verification": "gh-attestation-verify-passed",
+            "verification": "sigstore-action-identity-verify-passed",
+            "transparency_log": "rekor-public-good",
         },
     }
     output.write_text(canonical_json(record), encoding="utf-8", newline="\n")
     return record
-
-
-def verify_attestation(bundle: Path, attestation: Path, repository: str) -> None:
-    """CI 專用：以 GitHub CLI 驗證每個成品檔都存在於同一簽章 bundle。"""
-
-    for item in bundle_files(bundle):
-        subject = bundle.joinpath(*PurePosixPath(item["path"]).parts)
-        result = subprocess.run(
-            [
-                "gh",
-                "attestation",
-                "verify",
-                str(subject),
-                "-R",
-                repository,
-                "--bundle",
-                str(attestation),
-            ],
-            check=False,
-        )
-        if result.returncode != 0:
-            raise ReleaseEvidenceError(f"Attestation verification failed: {item['path']}")
 
 
 def validate_release_evidence(
@@ -200,7 +231,9 @@ def validate_release_evidence(
         path = evidence_dir / f"{platform}.json"
         try:
             record = json.loads(path.read_text(encoding="utf-8"))
-            _validate_platform_record(evidence_dir, record, platform, source_commit, version)
+            _validate_platform_record(
+                evidence_dir, record, platform, source_commit, version
+            )
             records[platform] = record
         except (OSError, json.JSONDecodeError, ReleaseEvidenceError) as error:
             errors.append(f"{platform}:{error}")
@@ -208,7 +241,9 @@ def validate_release_evidence(
         if not (evidence_dir / name).is_file():
             errors.append(f"missing:{name}")
     if len(records) == len(PLATFORMS) and not errors:
-        errors.extend(_validate_aggregate(evidence_dir, records, source_commit, version))
+        errors.extend(
+            _validate_aggregate(evidence_dir, records, source_commit, version)
+        )
     return {
         "valid": not errors,
         "errors": errors,
@@ -265,12 +300,22 @@ def _validate_platform_record(
             raise ReleaseEvidenceError("invalid bundle digest")
         seen.add(path)
     attestation = record.get("attestation", {})
-    if attestation.get("verification") != "gh-attestation-verify-passed":
+    expected_identity = f"https://github.com/{workflow.get('ref', '')}"
+    if (
+        attestation.get("provider") != "sigstore-public-good"
+        or attestation.get("verification") != "sigstore-action-identity-verify-passed"
+        or attestation.get("certificate_identity") != expected_identity
+        or attestation.get("oidc_issuer") != SIGSTORE_OIDC_ISSUER
+        or attestation.get("transparency_log") != "rekor-public-good"
+    ):
         raise ReleaseEvidenceError("attestation was not verified")
-    if not str(attestation.get("id", "")).isdigit() or not str(
-        attestation.get("url", "")
-    ).startswith(f"https://github.com/{repository}/attestations/"):
-        raise ReleaseEvidenceError("attestation identity mismatch")
+    subject_path = evidence_dir / str(attestation.get("signed_subject_path", ""))
+    if not subject_path.is_file():
+        raise ReleaseEvidenceError("signed checksum subject missing")
+    if sha256_file(subject_path) != attestation.get("signed_subject_sha256"):
+        raise ReleaseEvidenceError("signed checksum subject digest mismatch")
+    if subject_path.read_text(encoding="utf-8") != checksum_manifest(files):
+        raise ReleaseEvidenceError("signed checksum subject content mismatch")
     bundle_path = evidence_dir / str(attestation.get("bundle_path", ""))
     _sigstore_bundle(bundle_path)
     if sha256_file(bundle_path) != attestation.get("bundle_sha256"):
@@ -286,11 +331,15 @@ def create_aggregate(
     """三個 matrix job 完成後，建立 commit-bound provenance 與簽章索引。"""
 
     records = {
-        platform: json.loads((evidence_dir / f"{platform}.json").read_text(encoding="utf-8"))
+        platform: json.loads(
+            (evidence_dir / f"{platform}.json").read_text(encoding="utf-8")
+        )
         for platform in PLATFORMS
     }
     for platform, record in records.items():
-        _validate_platform_record(evidence_dir, record, platform, source_commit, version)
+        _validate_platform_record(
+            evidence_dir, record, platform, source_commit, version
+        )
     identities = {
         (
             record["repository"],
@@ -364,7 +413,11 @@ def _validate_aggregate(
         # 使用同一產生器重建，再以 canonical JSON 比對；暫存目錄由 caller 放在
         # ignored release-evidence 內，不影響 immutable source 工作樹。
         for platform, record in records.items():
-            (expected_dir / f"{platform}.json").write_text(canonical_json(record), encoding="utf-8")
+            (expected_dir / f"{platform}.json").write_text(
+                canonical_json(record), encoding="utf-8"
+            )
+            signed_subject = evidence_dir / record["attestation"]["signed_subject_path"]
+            shutil.copyfile(signed_subject, expected_dir / signed_subject.name)
             source = evidence_dir / record["attestation"]["bundle_path"]
             shutil.copyfile(source, expected_dir / source.name)
         create_aggregate(expected_dir, source_commit=commit, version=version)
@@ -383,16 +436,16 @@ def _validate_aggregate(
 def main() -> int:
     parser = argparse.ArgumentParser(description="建立或驗證三平台 RC 證據")
     subparsers = parser.add_subparsers(dest="command", required=True)
-    verify = subparsers.add_parser("verify-attestation")
-    verify.add_argument("--bundle", type=Path, required=True)
-    verify.add_argument("--attestation", type=Path, required=True)
-    verify.add_argument("--repository", required=True)
+    checksums = subparsers.add_parser("checksums")
+    checksums.add_argument("--bundle", type=Path, required=True)
+    checksums.add_argument("--output", type=Path, required=True)
     platform = subparsers.add_parser("platform")
     for command in (platform,):
         command.add_argument("--root", type=Path, default=Path.cwd())
         command.add_argument("--bundle", type=Path, required=True)
         command.add_argument("--output", type=Path, required=True)
         command.add_argument("--attestation-bundle", type=Path, required=True)
+        command.add_argument("--signed-subject", type=Path, required=True)
         command.add_argument("--platform", choices=PLATFORMS, required=True)
         command.add_argument("--version", required=True)
         command.add_argument("--source-commit", required=True)
@@ -403,16 +456,14 @@ def main() -> int:
         command.add_argument("--artifact-name", required=True)
         command.add_argument("--artifact-id", required=True)
         command.add_argument("--artifact-url", required=True)
-        command.add_argument("--attestation-id", required=True)
-        command.add_argument("--attestation-url", required=True)
     aggregate = subparsers.add_parser("aggregate")
     aggregate.add_argument("--evidence-dir", type=Path, required=True)
     aggregate.add_argument("--source-commit", required=True)
     aggregate.add_argument("--version", required=True)
     args = parser.parse_args()
     try:
-        if args.command == "verify-attestation":
-            verify_attestation(args.bundle, args.attestation, args.repository)
+        if args.command == "checksums":
+            create_checksum_manifest(args.bundle, args.output)
         elif args.command == "platform":
             platform_arguments = vars(args).copy()
             platform_arguments.pop("command")

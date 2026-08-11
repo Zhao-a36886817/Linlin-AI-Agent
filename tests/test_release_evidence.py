@@ -9,6 +9,7 @@ from scripts.release_evidence import (
     PLATFORMS,
     ReleaseEvidenceError,
     create_aggregate,
+    create_checksum_manifest,
     create_platform_record,
     validate_release_evidence,
 )
@@ -19,17 +20,16 @@ VERSION = "1.0.0-rc.1"
 
 
 def fake_sigstore_bundle(path: Path) -> None:
-    """測試只驗 schema 綁定；真實密碼學驗證由 CI 的 GitHub CLI 執行。"""
+    """測試只驗 schema 綁定；真實密碼學驗證由官方 Sigstore action 執行。"""
 
     path.write_text(
         json.dumps(
             {
                 "mediaType": "application/vnd.dev.sigstore.bundle.v0.3+json",
                 "verificationMaterial": {"certificate": {"rawBytes": "test"}},
-                "dsseEnvelope": {
-                    "payload": "test",
-                    "payloadType": "application/vnd.in-toto+json",
-                    "signatures": [{"sig": "test"}],
+                "messageSignature": {
+                    "messageDigest": {"algorithm": "SHA2_256", "digest": "test"},
+                    "signature": "test",
                 },
             }
         ),
@@ -48,11 +48,14 @@ def build_evidence(tmp_path: Path) -> Path:
         (bundle / "sbom.cdx.json").write_text("{}", encoding="utf-8")
         attestation = tmp_path / f"source-{platform}.attestation.json"
         fake_sigstore_bundle(attestation)
+        signed_subject = tmp_path / f"source-{platform}.subjects.sha256"
+        create_checksum_manifest(bundle, signed_subject)
         create_platform_record(
             root=ROOT,
             bundle=bundle,
             output=evidence / f"{platform}.json",
             attestation_bundle=attestation,
+            signed_subject=signed_subject,
             platform=platform,
             version=VERSION,
             source_commit=COMMIT,
@@ -65,8 +68,6 @@ def build_evidence(tmp_path: Path) -> Path:
             artifact_name=f"linlin-agent-{VERSION}-{platform}",
             artifact_id=str(1000 + index),
             artifact_url=f"https://github.com/owner/repository/actions/artifacts/{index}",
-            attestation_id=str(2000 + index),
-            attestation_url=f"https://github.com/owner/repository/attestations/{index}",
         )
     create_aggregate(evidence, source_commit=COMMIT, version=VERSION)
     return evidence
@@ -103,13 +104,16 @@ def test_platform_record_rejects_non_sigstore_json(tmp_path: Path) -> None:
     (bundle / "candidate.bin").write_bytes(b"candidate")
     attestation = tmp_path / "attestation.json"
     attestation.write_text("{}", encoding="utf-8")
+    signed_subject = tmp_path / "subjects.sha256"
+    create_checksum_manifest(bundle, signed_subject)
 
-    with pytest.raises(ReleaseEvidenceError, match="signed DSSE"):
+    with pytest.raises(ReleaseEvidenceError, match="signed material"):
         create_platform_record(
             root=ROOT,
             bundle=bundle,
             output=tmp_path / "windows.json",
             attestation_bundle=attestation,
+            signed_subject=signed_subject,
             platform="windows",
             version=VERSION,
             source_commit=COMMIT,
@@ -122,6 +126,37 @@ def test_platform_record_rejects_non_sigstore_json(tmp_path: Path) -> None:
             artifact_name="candidate",
             artifact_id="2",
             artifact_url="https://github.com/owner/repository/actions/artifacts/2",
-            attestation_id="3",
-            attestation_url="https://github.com/owner/repository/attestations/3",
+        )
+
+
+def test_platform_record_rejects_checksum_subject_for_other_bundle(
+    tmp_path: Path,
+) -> None:
+    """即使 Sigstore bundle 看似有效，也不能接受簽到另一批檔案的雜湊清單。"""
+
+    bundle = tmp_path / "bundle"
+    bundle.mkdir()
+    (bundle / "candidate.bin").write_bytes(b"candidate")
+    signed_subject = tmp_path / "subjects.sha256"
+    signed_subject.write_text(f"{'0' * 64}  candidate.bin\n", encoding="utf-8")
+    attestation = tmp_path / "attestation.json"
+    fake_sigstore_bundle(attestation)
+
+    with pytest.raises(ReleaseEvidenceError, match="does not match native bundle"):
+        create_platform_record(
+            root=ROOT,
+            bundle=bundle,
+            output=tmp_path / "windows.json",
+            attestation_bundle=attestation,
+            signed_subject=signed_subject,
+            platform="windows",
+            version=VERSION,
+            source_commit=COMMIT,
+            repository="owner/repository",
+            workflow_ref="owner/repository/.github/workflows/release.yml@refs/heads/main",
+            run_id="1",
+            run_attempt=1,
+            artifact_name="candidate",
+            artifact_id="2",
+            artifact_url="https://github.com/owner/repository/actions/artifacts/2",
         )
