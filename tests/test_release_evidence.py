@@ -11,6 +11,7 @@ from scripts.release_evidence import (
     create_aggregate,
     create_checksum_manifest,
     create_platform_record,
+    stage_native_bundle,
     validate_release_evidence,
 )
 
@@ -160,3 +161,46 @@ def test_platform_record_rejects_checksum_subject_for_other_bundle(
             artifact_id="2",
             artifact_url="https://github.com/owner/repository/actions/artifacts/2",
         )
+
+
+def test_native_staging_copies_only_final_installers_and_sbom(tmp_path: Path) -> None:
+    """Linux 暫存樹可含 symlink，但可簽署候選目錄必須完全沒有連結。"""
+
+    source = tmp_path / "tauri-bundle"
+    (source / "deb").mkdir(parents=True)
+    (source / "appimage").mkdir()
+    (source / "appimage" / "candidate.AppImage").write_bytes(b"appimage")
+    (source / "deb" / "candidate.deb").write_bytes(b"deb")
+    (source / "sbom.cdx.json").write_text("{}", encoding="utf-8")
+    (source / "appimage" / "temporary.txt").write_text("skip", encoding="utf-8")
+    temporary_link = source / "appimage" / "AppRun"
+    try:
+        temporary_link.symlink_to(source / "appimage" / "temporary.txt")
+    except OSError:
+        # 一般 Windows 測試帳號可能沒有建立 symlink 的權限；函式本身仍由
+        # bundle_files 的 fail-closed 測試與 Linux CI 路徑共同覆蓋。
+        temporary_link = None
+
+    staged = tmp_path / "release-staging" / "linux"
+    files = stage_native_bundle(source, staged, "linux")
+
+    assert {item["path"] for item in files} == {
+        "appimage/candidate.AppImage",
+        "deb/candidate.deb",
+        "sbom.cdx.json",
+    }
+    assert not (staged / "appimage" / "temporary.txt").exists()
+    if temporary_link is not None:
+        assert not (staged / "appimage" / "AppRun").exists()
+
+
+def test_native_staging_requires_every_platform_format(tmp_path: Path) -> None:
+    """Linux matrix 宣告 DEB + AppImage 時，缺任一格式都必須停止蒐證。"""
+
+    source = tmp_path / "tauri-bundle"
+    source.mkdir()
+    (source / "candidate.deb").write_bytes(b"deb")
+    (source / "sbom.cdx.json").write_text("{}", encoding="utf-8")
+
+    with pytest.raises(ReleaseEvidenceError, match=".appimage"):
+        stage_native_bundle(source, tmp_path / "release-staging", "linux")

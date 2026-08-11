@@ -23,6 +23,11 @@ SHA256 = re.compile(r"[0-9a-f]{64}")
 COMMIT = re.compile(r"[0-9a-f]{40}")
 RC_VERSION = re.compile(r"1\.0\.0-rc\.\d+")
 SIGSTORE_OIDC_ISSUER = "https://token.actions.githubusercontent.com"
+NATIVE_SUFFIXES = {
+    "windows": (".exe",),
+    "linux": (".deb", ".appimage"),
+    "macos": (".dmg",),
+}
 
 
 class ReleaseEvidenceError(RuntimeError):
@@ -101,6 +106,55 @@ def bundle_files(bundle: Path) -> list[dict[str, Any]]:
     if not files:
         raise ReleaseEvidenceError("Native bundle is empty.")
     return files
+
+
+def stage_native_bundle(
+    source: Path, output: Path, platform: str
+) -> list[dict[str, Any]]:
+    """只把最終安裝檔與 SBOM 放進乾淨候選目錄。
+
+    Tauri 的 build bundle 可能保留 AppDir、資源連結與打包工具暫存檔。直接簽署
+    那棵樹會讓 symbolic link 的語意依 runner 或上傳工具而改變。因此此函式不
+    追蹤連結，只複製各平台可下載的最終封裝格式及 SBOM，並要求每種指定格式
+    至少出現一次。`bundle_files` 之後仍維持「候選目錄禁止連結」的 fail-closed
+    規則。
+    """
+
+    if platform not in PLATFORMS:
+        raise ReleaseEvidenceError("Invalid native staging platform.")
+    source = source.resolve()
+    output = output.resolve()
+    if not source.is_dir() or output == source or source in output.parents:
+        raise ReleaseEvidenceError("Unsafe native staging directories.")
+    if output.exists() and (not output.is_dir() or any(output.iterdir())):
+        raise ReleaseEvidenceError("Native staging output must be empty.")
+
+    suffixes = NATIVE_SUFFIXES[platform]
+    found: set[str] = set()
+    for path in sorted(source.rglob("*"), key=lambda item: item.as_posix()):
+        # 不對 symlink 呼叫 resolve 或 copy，避免連結逃出 Tauri bundle。
+        if path.is_symlink() or not path.is_file():
+            continue
+        normalized_suffix = path.suffix.lower()
+        if normalized_suffix not in suffixes:
+            continue
+        relative = path.relative_to(source)
+        destination = output / relative
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(path, destination)
+        found.add(normalized_suffix)
+
+    expected = set(suffixes)
+    if found != expected:
+        missing = ", ".join(sorted(expected - found))
+        raise ReleaseEvidenceError(f"Native staging formats are missing: {missing}")
+
+    sbom = source / "sbom.cdx.json"
+    if not sbom.is_file() or sbom.is_symlink():
+        raise ReleaseEvidenceError("Native staging SBOM is missing or unsafe.")
+    output.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(sbom, output / "sbom.cdx.json")
+    return bundle_files(output)
 
 
 def checksum_manifest(files: list[dict[str, Any]]) -> str:
@@ -436,6 +490,10 @@ def _validate_aggregate(
 def main() -> int:
     parser = argparse.ArgumentParser(description="建立或驗證三平台 RC 證據")
     subparsers = parser.add_subparsers(dest="command", required=True)
+    stage = subparsers.add_parser("stage")
+    stage.add_argument("--source", type=Path, required=True)
+    stage.add_argument("--output", type=Path, required=True)
+    stage.add_argument("--platform", choices=PLATFORMS, required=True)
     checksums = subparsers.add_parser("checksums")
     checksums.add_argument("--bundle", type=Path, required=True)
     checksums.add_argument("--output", type=Path, required=True)
@@ -462,7 +520,9 @@ def main() -> int:
     aggregate.add_argument("--version", required=True)
     args = parser.parse_args()
     try:
-        if args.command == "checksums":
+        if args.command == "stage":
+            stage_native_bundle(args.source, args.output, args.platform)
+        elif args.command == "checksums":
             create_checksum_manifest(args.bundle, args.output)
         elif args.command == "platform":
             platform_arguments = vars(args).copy()

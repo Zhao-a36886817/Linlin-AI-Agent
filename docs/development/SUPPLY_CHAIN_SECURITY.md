@@ -24,7 +24,11 @@ Tauri signing values exist only as environment secrets and are never command
 arguments or output.
 
 Each runner first creates a deterministic SHA-256 manifest for every file in its
-native bundle. The workflow signs that manifest through the free Sigstore public
+native bundle. Before hashing, a fail-closed staging step copies only the final
+installer formats and SBOM into a clean candidate tree. It ignores Tauri build
+intermediates and never follows symbolic links, so an AppDir link cannot escape the
+bundle or acquire different meaning during artifact upload. The workflow signs the
+resulting manifest through the free Sigstore public
 good service, using GitHub Actions OIDC, then immediately verifies the exact
 workflow certificate identity, GitHub OIDC issuer and Rekor transparency entry.
 The Sigstore Action is pinned to a full commit SHA. This route supports private

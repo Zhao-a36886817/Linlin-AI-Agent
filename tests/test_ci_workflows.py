@@ -64,6 +64,7 @@ def test_release_preserves_commit_bound_three_platform_p24_evidence() -> None:
     """Workflow 必須產出可下載證據，不能只在 log 宣稱 build/attest 成功。"""
 
     text = workflow("release.yml")
+    assert "scripts/release_evidence.py stage" in text
     assert "scripts/release_evidence.py checksums" in text
     assert "scripts/release_evidence.py platform" in text
     assert "scripts/release_evidence.py aggregate" in text
@@ -83,4 +84,5 @@ def test_release_preserves_commit_bound_three_platform_p24_evidence() -> None:
     assert "actions/attest@" not in text
     assert 'bundles: "nsis"' in text
     assert "tauri build --bundles ${{ matrix.bundles }}" in text
+    assert '--bundle "release-staging/${{ matrix.artifact }}"' in text
     assert "p24-release-evidence" in text

@@ -69,18 +69,26 @@ jobs:
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
       - name: Generate SBOM
         run: python scripts/supply_chain.py sbom --output desktop/src-tauri/target/release/bundle/sbom.cdx.json
+      # Tauri 可能在 build bundle 保留 AppDir 或 symbolic link 暫存內容。先萃取
+      # 最終安裝檔與 SBOM，後續簽章、上傳、證據紀錄都只使用同一棵乾淨目錄。
+      - name: Stage final native installers
+        run: >-
+          python scripts/release_evidence.py stage
+          --source desktop/src-tauri/target/release/bundle
+          --output "release-staging/${{ matrix.artifact }}"
+          --platform "${{ matrix.artifact }}"
       # 簽署逐檔 SHA-256 清單，而不是只簽一個未解釋的壓縮檔；P24 驗證器會再確認
       # 清單內容與平台紀錄完全相同，讓每個原生成品都被同一個 workflow 身分綁定。
       - name: Generate native bundle checksum subject
         run: >-
           python scripts/release_evidence.py checksums
-          --bundle desktop/src-tauri/target/release/bundle
+          --bundle "release-staging/${{ matrix.artifact }}"
           --output "release-evidence/${{ matrix.artifact }}.subjects.sha256"
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         id: upload
         with:
           name: linlin-agent-${{ inputs.version }}-${{ matrix.artifact }}
-          path: desktop/src-tauri/target/release/bundle
+          path: "release-staging/${{ matrix.artifact }}"
           if-no-files-found: error
           retention-days: 14
       # GitHub 內建 artifact attestation 不支援私人個人倉庫；改用免費 Sigstore
@@ -98,7 +106,7 @@ jobs:
         run: >-
           python scripts/release_evidence.py platform
           --root .
-          --bundle desktop/src-tauri/target/release/bundle
+          --bundle "release-staging/${{ matrix.artifact }}"
           --output "release-evidence/${{ matrix.artifact }}.json"
           --attestation-bundle "release-evidence/${{ matrix.artifact }}.subjects.sha256.sigstore.json"
           --signed-subject "release-evidence/${{ matrix.artifact }}.subjects.sha256"
