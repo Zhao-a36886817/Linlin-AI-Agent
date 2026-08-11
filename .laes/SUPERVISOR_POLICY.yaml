@@ -746,8 +746,12 @@ phases:
       - scripts/enterprise_gate.py
       - scripts/governance_manifest.py
       - scripts/p24_evidence_recovery.py
+      - scripts/release_evidence.py
       - scripts/supply_chain.py
       - tests/test_enterprise_gate.py
+      - tests/test_release_evidence.py
+      - tests/test_ci_workflows.py
+      - .github/workflows/release.yml
       - MANIFEST.sha256
       - docs/development/ENTERPRISE_READINESS.md
       - docs/governance/evidence/P0_P23_APPROVAL_EXCERPTS.md
@@ -774,13 +778,13 @@ phases:
       - desktop
       - Linlin-Agent
       - models
-      - .github/workflows
+      - .github/workflows/ci.yml
       - scripts/laes_supervisor.py
       - scripts/release_integrity.py
     validations:
       - name: enterprise gate ruff
         cwd: .
-        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "ruff", "check", "scripts/enterprise_gate.py", "scripts/governance_manifest.py", "scripts/p24_evidence_recovery.py", "scripts/supply_chain.py", "tests/test_enterprise_gate.py"]
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "ruff", "check", "scripts/enterprise_gate.py", "scripts/governance_manifest.py", "scripts/p24_evidence_recovery.py", "scripts/release_evidence.py", "scripts/supply_chain.py", "tests/test_enterprise_gate.py", "tests/test_release_evidence.py"]
       - name: enterprise evidence tests
         cwd: .
         command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests/test_enterprise_gate.py", "-q", "--basetemp", "tests/__pycache__/pytest-p24-enterprise", "-p", "no:cacheprovider"]

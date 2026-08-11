@@ -41,3 +41,19 @@ def test_release_is_manual_gated_and_never_logs_signing_secrets() -> None:
     assert not re.search(r"(?:echo|Write-Output).*TAURI_SIGNING", text, re.IGNORECASE)
     assert "attestations: write" in text
     assert "id-token: write" in text
+
+
+def test_release_preserves_commit_bound_three_platform_p24_evidence() -> None:
+    """Workflow 必須產出可下載證據，不能只在 log 宣稱 build/attest 成功。"""
+
+    text = workflow("release.yml")
+    assert "scripts/release_evidence.py verify-attestation" in text
+    assert "scripts/release_evidence.py platform" in text
+    assert "scripts/release_evidence.py aggregate" in text
+    assert "needs: signed-candidate" in text
+    for platform in ("windows", "linux", "macos"):
+        assert f"linlin-agent-evidence-{platform}" in text
+    assert "${{ github.sha }}" in text
+    assert "${{ github.run_id }}" in text
+    assert "${{ steps.attest.outputs.bundle-path }}" in text
+    assert "p24-release-evidence" in text

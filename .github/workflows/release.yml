@@ -13,9 +13,11 @@ on:
         type: string
 
 permissions:
+  actions: read
   contents: read
   id-token: write
   attestations: write
+  artifact-metadata: write
 
 concurrency:
   group: production-release
@@ -72,5 +74,70 @@ jobs:
           if-no-files-found: error
           retention-days: 14
       - uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4
+        id: attest
         with:
           subject-path: desktop/src-tauri/target/release/bundle/**
+      - name: Verify GitHub Sigstore attestation
+        run: >-
+          python scripts/release_evidence.py verify-attestation
+          --bundle desktop/src-tauri/target/release/bundle
+          --attestation "${{ steps.attest.outputs.bundle-path }}"
+          --repository "${{ github.repository }}"
+      - name: Record commit-bound platform evidence
+        run: >-
+          python scripts/release_evidence.py platform
+          --root .
+          --bundle desktop/src-tauri/target/release/bundle
+          --output "release-evidence/${{ matrix.artifact }}.json"
+          --attestation-bundle "${{ steps.attest.outputs.bundle-path }}"
+          --platform "${{ matrix.artifact }}"
+          --version "${{ inputs.version }}"
+          --source-commit "${{ github.sha }}"
+          --repository "${{ github.repository }}"
+          --workflow-ref "${{ github.workflow_ref }}"
+          --run-id "${{ github.run_id }}"
+          --run-attempt "${{ github.run_attempt }}"
+          --artifact-name "linlin-agent-${{ inputs.version }}-${{ matrix.artifact }}"
+          --artifact-id "${{ steps.upload.outputs.artifact-id }}"
+          --artifact-url "${{ steps.upload.outputs.artifact-url }}"
+          --attestation-id "${{ steps.attest.outputs.attestation-id }}"
+          --attestation-url "${{ steps.attest.outputs.attestation-url }}"
+      - name: Upload platform evidence
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: linlin-agent-evidence-${{ matrix.artifact }}
+          path: release-evidence
+          if-no-files-found: error
+          retention-days: 14
+
+  aggregate-evidence:
+    if: inputs.promotion == 'PROMOTE'
+    needs: signed-candidate
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - name: Download three platform evidence artifacts
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh run download "${{ github.run_id }}" --name linlin-agent-evidence-windows --dir release-evidence
+          gh run download "${{ github.run_id }}" --name linlin-agent-evidence-linux --dir release-evidence
+          gh run download "${{ github.run_id }}" --name linlin-agent-evidence-macos --dir release-evidence
+      - name: Build and validate aggregate provenance
+        run: >-
+          python scripts/release_evidence.py aggregate
+          --evidence-dir release-evidence
+          --source-commit "${{ github.sha }}"
+          --version "${{ inputs.version }}"
+      - name: Upload P24 release evidence
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: linlin-agent-${{ inputs.version }}-p24-release-evidence
+          path: release-evidence
+          if-no-files-found: error
+          retention-days: 30

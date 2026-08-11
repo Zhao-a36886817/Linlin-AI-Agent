@@ -14,9 +14,11 @@ import yaml
 
 if __package__:
     from scripts.governance_manifest import ManifestError, release_source_paths
+    from scripts.release_evidence import validate_release_evidence
     from scripts.supply_chain import scan_secrets
 else:
     from governance_manifest import ManifestError, release_source_paths
+    from release_evidence import validate_release_evidence
     from supply_chain import scan_secrets
 
 PHASES = tuple(f"P{number}" for number in range(24))
@@ -463,22 +465,18 @@ def audit_repository(root: Path) -> dict[str, Any]:
             )
         )
 
-    native_evidence = root / "release-evidence"
-    required_release_evidence = [
-        native_evidence / "windows.json",
-        native_evidence / "linux.json",
-        native_evidence / "macos.json",
-        native_evidence / "provenance.json",
-        native_evidence / "signing-attestation.json",
-    ]
-    absent_release_evidence = [path.name for path in required_release_evidence if not path.is_file()]
-    if absent_release_evidence:
+    native_evidence = validate_release_evidence(
+        root / "release-evidence",
+        source_commit=source["commit"],
+        version=next(iter(set(versions.values()))),
+    )
+    if not native_evidence["valid"]:
         findings.append(
             _finding(
                 "ARTIFACT-001",
                 "high",
                 "Commit-bound native artifacts and attestations are absent",
-                ", ".join(absent_release_evidence),
+                ", ".join(native_evidence["errors"]),
                 "Release Engineering",
                 "Run the protected three-platform release workflow and retain signed commit-bound evidence.",
             )
@@ -499,6 +497,7 @@ def audit_repository(root: Path) -> dict[str, Any]:
         "manifest": manifest,
         "phase_evidence": evidence,
         "approval_ledger": approvals,
+        "release_evidence": native_evidence,
         "blockers": blockers,
         "exceptions": [],
         "recommendation": recommendation,

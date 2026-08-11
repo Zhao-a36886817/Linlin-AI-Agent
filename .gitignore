@@ -55,6 +55,17 @@ data/*
 # export 保留在 F 槽供本機 drift check 與稽核，不納入 Git。
 /Codex-Task-Export/
 
+# Downloaded CI release evidence
+# 三平台成品證據必須由 GitHub Actions 產生並綁定 commit；下載到本機後供 P24
+# Gate 驗證，但不能再提交而改變被證明的 source commit，避免自我指涉循環。
+/release-evidence/
+
+# P24 dynamic gate records
+# P24 index、review package 與 owner decision 是「審查已凍結來源」後才產生的
+# 稽核輸出。若納入被審查 commit，任何 NO_GO→GO 決策都會改變 source commit，
+# 讓三平台 attestation 永遠失效。檔案保留在 F 槽，但與 immutable source 分離。
+/docs/governance/phase-artifacts/P24/
+
 # Local launcher runtime
 # 啟動器本身保留在 tools/launcher；只有可重新產生的網頁產物、瀏覽器設定檔、
 # 執行記錄與本機工作資料不納入版本控制。
