@@ -3,6 +3,7 @@ from pathlib import Path
 import pytest
 
 from app.providers.models import (
+    ProviderCostClass,
     ProviderCreate,
     ProviderKind,
     ProviderUpdate,
@@ -40,6 +41,7 @@ async def test_provider_crud(
 
     assert created.name == "OpenRouter Main"
     assert created.kind == ProviderKind.OPENROUTER
+    assert created.cost_class == ProviderCostClass.UNKNOWN
     assert created.has_api_key is False
 
     listing = await service.list_providers()

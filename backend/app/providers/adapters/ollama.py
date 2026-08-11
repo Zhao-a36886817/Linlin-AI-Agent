@@ -7,6 +7,7 @@ from typing import Any, Self
 import httpx
 
 from app.providers.adapters.base import BaseProvider
+from app.providers.models import ProviderCostClass
 from app.providers.tool_parser import ToolParser
 
 
@@ -16,8 +17,13 @@ class OllamaProvider(BaseProvider):
     name = "ollama"
     supports_stream = True
     supports_tools = True
+    supports_thinking_with_tools = False
     supports_embeddings = True
     supports_vision = False
+    requires_api_key = False
+    local = True
+    experimental = False
+    cost_class = ProviderCostClass.LOCAL_FREE
 
     def __init__(
         self,
@@ -109,26 +115,11 @@ class OllamaProvider(BaseProvider):
         payload.update(kwargs)
         payload["stream"] = False
 
-        from pprint import pprint
-
-        print("\n" + "=" * 80)
-        print("OLLAMA PAYLOAD")
-        print("=" * 80)
-        pprint(payload, width=120)
-        print("=" * 80 + "\n")
-
         raw = await self._request(
             "POST",
             "/api/chat",
             payload,
         )
-
-        print("=" * 80)
-        print("OLLAMA RAW RESPONSE")
-        from pprint import pprint
-
-        pprint(raw, width=120)
-        print("=" * 80)
 
         message = raw.get("message", {})
 

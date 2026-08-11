@@ -1,4 +1,3 @@
-import os
 from datetime import UTC, datetime
 from uuid import UUID, uuid4
 
@@ -11,6 +10,7 @@ from app.providers.models import (
     ProviderUpdate,
 )
 from app.providers.storage import ProviderStorage
+from app.security.credential_store import CredentialStore, credential_store
 
 
 class ProviderNotFoundError(LookupError):
@@ -24,8 +24,13 @@ class ProviderNameConflictError(ValueError):
 class ProviderService:
     """Provider configuration business logic."""
 
-    def __init__(self, storage: ProviderStorage) -> None:
+    def __init__(
+        self,
+        storage: ProviderStorage,
+        credentials: CredentialStore | None = None,
+    ) -> None:
         self._storage = storage
+        self.credentials = credentials or credential_store
 
     async def initialize(self) -> None:
         await self._storage.initialize()
@@ -77,6 +82,7 @@ class ProviderService:
             id=uuid4(),
             name=payload.name,
             kind=payload.kind,
+            cost_class=payload.cost_class,
             base_url=payload.base_url,
             api_key_env=payload.api_key_env,
             default_model=payload.default_model,
@@ -152,6 +158,14 @@ class ProviderService:
 
         return sum(1 for provider in providers if provider.enabled)
 
+    async def list_configs(self) -> list[ProviderConfig]:
+        """Return internal configs for the Provider Runtime boundary only."""
+
+        return await self._storage.list_all()
+
+    async def get_config(self, provider_id: UUID) -> ProviderConfig:
+        return self._find_provider(await self._storage.list_all(), provider_id)
+
     @staticmethod
     def _find_provider(
         providers: list[ProviderConfig],
@@ -182,19 +196,20 @@ class ProviderService:
                     f"Provider name '{name}' already exists.",
                 )
 
-    @staticmethod
     def _to_public(
+        self,
         provider: ProviderConfig,
     ) -> ProviderPublic:
-        has_api_key = bool(provider.api_key_env and os.getenv(provider.api_key_env))
+        available = self.credentials.has(provider.api_key_env)
 
         return ProviderPublic(
             id=provider.id,
             name=provider.name,
             kind=provider.kind,
+            cost_class=provider.cost_class,
             base_url=provider.base_url,
             api_key_env=provider.api_key_env,
-            has_api_key=has_api_key,
+            has_api_key=available,
             default_model=provider.default_model,
             enabled=provider.enabled,
             timeout_seconds=provider.timeout_seconds,

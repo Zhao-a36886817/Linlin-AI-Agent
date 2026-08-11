@@ -3,7 +3,14 @@ from enum import StrEnum
 from typing import Annotated
 from uuid import UUID
 
-from pydantic import BaseModel, ConfigDict, Field, StringConstraints
+from pydantic import (
+    BaseModel,
+    ConfigDict,
+    Field,
+    SecretStr,
+    StringConstraints,
+    model_validator,
+)
 
 NonEmptyString = Annotated[
     str,
@@ -28,6 +35,15 @@ class ProviderKind(StrEnum):
     OPENAI_COMPATIBLE = "openai_compatible"
 
 
+class ProviderCostClass(StrEnum):
+    """API-usage cost classification; model licenses remain separate."""
+
+    LOCAL_FREE = "LOCAL_FREE"
+    FREE_TIER = "FREE_TIER"
+    PAID = "PAID"
+    UNKNOWN = "UNKNOWN"
+
+
 class ProviderCreate(BaseModel):
     """Data accepted when creating a provider."""
 
@@ -35,6 +51,7 @@ class ProviderCreate(BaseModel):
 
     name: NonEmptyString
     kind: ProviderKind
+    cost_class: ProviderCostClass = ProviderCostClass.UNKNOWN
 
     base_url: str | None = Field(
         default=None,
@@ -53,7 +70,7 @@ class ProviderCreate(BaseModel):
         max_length=300,
     )
 
-    enabled: bool = True
+    enabled: bool = False
 
     timeout_seconds: int = Field(
         default=120,
@@ -83,6 +100,7 @@ class ProviderUpdate(BaseModel):
 
     name: NonEmptyString | None = None
     kind: ProviderKind | None = None
+    cost_class: ProviderCostClass | None = None
 
     base_url: str | None = Field(
         default=None,
@@ -131,6 +149,7 @@ class ProviderConfig(BaseModel):
     id: UUID
     name: NonEmptyString
     kind: ProviderKind
+    cost_class: ProviderCostClass = ProviderCostClass.UNKNOWN
 
     base_url: str | None = None
     api_key_env: str | None = None
@@ -153,6 +172,7 @@ class ProviderPublic(BaseModel):
     id: UUID
     name: str
     kind: ProviderKind
+    cost_class: ProviderCostClass
 
     base_url: str | None
     api_key_env: str | None
@@ -183,3 +203,39 @@ class ProviderDeleteResponse(BaseModel):
 
     deleted: bool
     provider_id: UUID
+
+
+class ProviderConnect(BaseModel):
+    """One-time secret input for dynamic provider activation."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    name: NonEmptyString
+    base_url: str = Field(min_length=1, max_length=1000)
+    api_key: SecretStr | None = None
+    credential_env: str | None = Field(
+        default=None,
+        pattern=r"^[A-Z][A-Z0-9_]*$",
+        max_length=100,
+    )
+    kind: ProviderKind | None = None
+    default_model: str | None = Field(default=None, max_length=300)
+    consent: bool
+
+    @model_validator(mode="after")
+    def exactly_one_credential_source(self) -> "ProviderConnect":
+        if bool(self.api_key) == bool(self.credential_env):
+            raise ValueError("Provide exactly one API key or credential environment name.")
+        return self
+
+
+class ProviderDiscoverRequest(BaseModel):
+    consent: bool
+
+
+class ProviderConnectResponse(BaseModel):
+    provider: ProviderPublic
+    runtime_name: str
+    detected_kind: ProviderKind
+    credential_persistent: bool
+    models: list[dict[str, object]]

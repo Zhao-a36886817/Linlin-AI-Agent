@@ -1,0 +1,20 @@
+schema_version: 1
+record_type: retrospective-approval-ledger
+phase: P12
+decision: APPROVED
+reviewer: ChatGPT
+reviewer_approved: true
+owner: project-owner
+owner_approved: true
+review_package: docs/governance/phase-artifacts/P12/P12_SUPERVISOR_REVIEW_PACKAGE.md
+review_package_sha256: 56ac2f9d21bf8e49bdfec0253bc6e1be8637e4fada4f21c62811af51bcbbdade
+source_transcript: docs/governance/evidence/P0_P23_APPROVAL_EXCERPTS.md
+source_transcript_sha256: d631a4d625f130b7632fa45b6d3a89047ffae5ef56b569587f533660defad3a8
+origin_transcript_sha256: 73a873b296aaaa9a7594403584f58b04e81cd3a1f830fbe2b749a4bc2847c0bc
+review_evidence_line: 69
+owner_authorization_line: 70
+original_review_evidence_line: 676
+original_owner_authorization_line: 579
+ledger_created_on: '2026-08-11'
+limitations: 由 Supervisor PASS package 與 task transcript 最小摘錄回溯建立；原 transcript 僅以
+  SHA-256 綁定且不隨 release 發布。不是遺失的原始 REVIEW_STATE，也不宣稱未知的原始核准時間。

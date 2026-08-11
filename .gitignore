@@ -2,6 +2,8 @@
 .env
 .env.*
 !.env.example
+/API.txt
+/*API.txt
 
 # Conda
 .conda/
@@ -10,6 +12,7 @@ conda-bld/
 # Python
 __pycache__/
 *.py[cod]
+*.egg-info/
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
@@ -34,6 +37,36 @@ logs/*
 !logs/.gitkeep
 data/*
 !data/.gitkeep
+
+# Local model weights
+# 模型權重通常接近 1 GB，且可能受各自授權條款限制；保留在 F 槽供本機免費
+# 推論使用，但不提交到 Git 或夾帶進原始碼 release。模型清單與取得方式應由
+# 文件／設定描述，而不是把 safetensors 納入 repository。
+/models/
+
+# Local UI design reference
+# Claude 提供的 frontend.zip 僅作視覺比較，正式來源仍是 frontend/。ZIP 保留
+# 在本機與 F 槽封存資料夾，不納入 P24 immutable source revision。
+/frontend.zip
+
+# Private task export
+# 完整 Codex task transcript 含大量對話脈絡；專案擁有者只授權用它建立回溯
+# 證據，未授權隨 release 公開。產生器只提交必要摘錄與完整原件 SHA-256，原始
+# export 保留在 F 槽供本機 drift check 與稽核，不納入 Git。
+/Codex-Task-Export/
+
+# Local launcher runtime
+# 啟動器本身保留在 tools/launcher；只有可重新產生的網頁產物、瀏覽器設定檔、
+# 執行記錄與本機工作資料不納入版本控制。
+/tools/launcher/runtime/
+
+# LAES local execution state
+# 這三個檔案會在每次 begin/validate 被覆寫，因此不能作為 immutable release
+# source。正式可稽核結果保存在 phase review package、completion report 與
+# hash-bound approval ledger；本機 state 仍保留供 Supervisor 繼續工作。
+/.laes/REVIEW_STATE.yaml
+/.laes/SUPERVISOR_BASELINE.json
+/.laes/SUPERVISOR_RESULTS.json
 
 # IDE
 .vscode/settings.json

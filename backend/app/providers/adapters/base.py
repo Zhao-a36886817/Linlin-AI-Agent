@@ -4,15 +4,40 @@ from abc import ABC, abstractmethod
 from collections.abc import AsyncIterator
 from typing import Any
 
+from app.providers.models import ProviderCostClass
+
 
 class BaseProvider(ABC):
     """Base interface implemented by every Linlin Agent model provider."""
 
     name: str = "base"
+    supports_chat: bool = True
     supports_stream: bool = False
     supports_vision: bool = False
     supports_tools: bool = False
+    supports_thinking_with_tools: bool = False
     supports_embeddings: bool = False
+    requires_api_key: bool = False
+    local: bool = False
+    experimental: bool = False
+    cost_class: ProviderCostClass = ProviderCostClass.UNKNOWN
+
+    @classmethod
+    def capabilities(cls) -> dict[str, bool]:
+        """Return normalized capability metadata for this adapter."""
+
+        return {
+            "supports_chat": cls.supports_chat,
+            "supports_stream": cls.supports_stream,
+            "supports_tools": cls.supports_tools,
+            "supports_thinking_with_tools": cls.supports_thinking_with_tools,
+            "supports_embeddings": cls.supports_embeddings,
+            "supports_vision": cls.supports_vision,
+            "requires_api_key": cls.requires_api_key,
+            "local": cls.local,
+            "experimental": cls.experimental,
+            "cost_class": cls.cost_class.value,
+        }
 
     @abstractmethod
     async def chat(
@@ -62,3 +87,8 @@ class BaseProvider(ABC):
         """Return whether the provider service is reachable."""
 
         return True
+
+    async def close(self) -> None:
+        """Release adapter resources when the runtime unregisters it."""
+
+        return

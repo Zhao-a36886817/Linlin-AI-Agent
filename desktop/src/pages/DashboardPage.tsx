@@ -67,7 +67,7 @@ export function DashboardPage({
           </div>
 
           <code>
-            C:\Linlin-Agent\scripts\start-backend.ps1
+            F:\Linlin-Agent\scripts\start-backend.ps1
           </code>
         </article>
       )}

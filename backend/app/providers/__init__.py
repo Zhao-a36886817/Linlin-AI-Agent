@@ -4,6 +4,7 @@
 
 from app.providers.models import (
     ProviderConfig,
+    ProviderCostClass,
     ProviderCreate,
     ProviderKind,
     ProviderPublic,
@@ -13,6 +14,7 @@ from app.providers.service import provider_service
 
 __all__ = [
     "ProviderConfig",
+    "ProviderCostClass",
     "ProviderCreate",
     "ProviderKind",
     "ProviderPublic",

@@ -1,0 +1,76 @@
+name: Release Candidate
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Reviewed semantic version
+        required: true
+        type: string
+      promotion:
+        description: Type PROMOTE after review
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  id-token: write
+  attestations: write
+
+concurrency:
+  group: production-release
+  cancel-in-progress: false
+
+jobs:
+  signed-candidate:
+    if: inputs.promotion == 'PROMOTE'
+    environment: production
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            artifact: linux
+          - os: windows-latest
+            artifact: windows
+          - os: macos-latest
+            artifact: macos
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: "3.12"
+      - name: Linux desktop prerequisites
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
+      - name: Install locked frontend
+        run: npm ci --prefix frontend
+      - name: Install locked desktop CLI
+        run: corepack enable && pnpm --dir desktop install --frozen-lockfile
+      - name: Validate source before signing
+        run: python scripts/supply_chain.py scan
+      - name: Build signed native candidate
+        run: pnpm --dir desktop exec tauri build
+        env:
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+      - name: Generate SBOM
+        run: python scripts/supply_chain.py sbom --output desktop/src-tauri/target/release/bundle/sbom.cdx.json
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        id: upload
+        with:
+          name: linlin-agent-${{ inputs.version }}-${{ matrix.artifact }}
+          path: desktop/src-tauri/target/release/bundle
+          if-no-files-found: error
+          retention-days: 14
+      - uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4
+        with:
+          subject-path: desktop/src-tauri/target/release/bundle/**

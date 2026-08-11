@@ -32,9 +32,20 @@ class Settings(BaseSettings):
     ]
 
     max_parallel_agents: int = 4
+    memory_enabled: bool = False
+    memory_default_ttl_seconds: int = 3600
+    rag_enabled: bool = False
+    scheduler_enabled: bool = False
+    orchestration_enabled: bool = False
+    artifact_max_bytes: int = 10_000_000
+    diagnostics_retention: int = 500
+    resource_max_queue: int = 32
+    resource_max_memory_bytes: int = 1_000_000_000
 
     workspace_root: Path = PROJECT_ROOT / "workspace"
     output_root: Path = PROJECT_ROOT / "outputs"
+    training_model_root: Path = PROJECT_ROOT / "models"
+    training_output_root: Path = PROJECT_ROOT / "outputs" / "training"
     log_root: Path = PROJECT_ROOT / "logs"
     data_root: Path = PROJECT_ROOT / "data"
 

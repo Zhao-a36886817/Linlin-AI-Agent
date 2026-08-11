@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-08-09T16:58:33.4197460Z",
+  "purpose": "Classify governance roadmaps, checksum lists, review material, and charters outside the repository root.",
+  "file_count": 9,
+  "files": [
+    {
+      "old_path": "LAES_SUPERVISOR_REVIEW_PACKAGE.md",
+      "new_path": "docs/governance/phase-artifacts/P0/LAES_SUPERVISOR_REVIEW_PACKAGE.md",
+      "archived_sha256": "4c400b23c0857a996f5a65c88864d7303361c51f7da8b8955bca5d1f82df15e0",
+      "active_sha256": "4c400b23c0857a996f5a65c88864d7303361c51f7da8b8955bca5d1f82df15e0",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "old_path": "ROADMAP_P10_P24.md",
+      "new_path": "docs/governance/roadmaps/ROADMAP_P10_P24.md",
+      "archived_sha256": "eb18209967f9cdb62ab7ecbb62b1d50d48d3067eb9f6f8799c6fbd73e82abf96",
+      "active_sha256": "eb18209967f9cdb62ab7ecbb62b1d50d48d3067eb9f6f8799c6fbd73e82abf96",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "old_path": "ROADMAP_P26_P28.md",
+      "new_path": "docs/governance/roadmaps/ROADMAP_P26_P28.md",
+      "archived_sha256": "6e48e1f75d70c1d05d252be789df3abc544964ca152911bcaca125557e251df0",
+      "active_sha256": "6e48e1f75d70c1d05d252be789df3abc544964ca152911bcaca125557e251df0",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "old_path": "ROADMAP_P29.md",
+      "new_path": "docs/governance/roadmaps/ROADMAP_P29.md",
+      "archived_sha256": "5d653afd2073db40593e7b7583155e15e95fe31ae1c8ff908b5189df27d636ac",
+      "active_sha256": "5d653afd2073db40593e7b7583155e15e95fe31ae1c8ff908b5189df27d636ac",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "old_path": "ROADMAP_P30.md",
+      "new_path": "docs/governance/roadmaps/ROADMAP_P30.md",
+      "archived_sha256": "4e0e18e4c51fa40ee9f12817869b2f14a24b7898616c1530b49bc62af0af51a2",
+      "active_sha256": "4e0e18e4c51fa40ee9f12817869b2f14a24b7898616c1530b49bc62af0af51a2",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "old_path": "ROADMAP_P31_P33.md",
+      "new_path": "docs/governance/roadmaps/ROADMAP_P31_P33.md",
+      "archived_sha256": "111f2b6b435d65be42699ab309ab6687860678c2e335b6b0cd2c7f6b60260cf4",
+      "active_sha256": "111f2b6b435d65be42699ab309ab6687860678c2e335b6b0cd2c7f6b60260cf4",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "old_path": "ROADMAP_P34.md",
+      "new_path": "docs/governance/roadmaps/ROADMAP_P34.md",
+      "archived_sha256": "dfca18fba237b39382aa4ee0ffeab6e8b5a0917310b0b078ee14b2433fd74153",
+      "active_sha256": "dfca18fba237b39382aa4ee0ffeab6e8b5a0917310b0b078ee14b2433fd74153",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "old_path": "Linlin_Agent_LAES_P10_P24_SHA256SUMS.txt",
+      "new_path": "docs/governance/checksums/Linlin_Agent_LAES_P10_P24_SHA256SUMS.txt",
+      "archived_sha256": "6480accf8c0b3695bfa412395829ede7fbb1b6ddab77846d57dd2447e9da3dcf",
+      "active_sha256": "5bef6ea42a3868292980ff6ce5cae0ae77613354a51059a18861cd855f5a7254",
+      "content_changed_for_path_relocation": true
+    },
+    {
+      "old_path": "Linlin_Agent_AI_Collaboration_Charter_v1.0.docx",
+      "new_path": "docs/governance/charters/Linlin_Agent_AI_Collaboration_Charter_v1.0.docx",
+      "archived_sha256": "1c527f7caf92979111b89f6a6f6738db981a9db25f8a3640fd75302d3867555f",
+      "active_sha256": "1c527f7caf92979111b89f6a6f6738db981a9db25f8a3640fd75302d3867555f",
+      "content_changed_for_path_relocation": false
+    }
+  ]
+}

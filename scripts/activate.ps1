@@ -2,8 +2,9 @@
 
 $ErrorActionPreference = "Stop"
 
-$EnvironmentName = "LinlinAgent"
-$ProjectRoot = "C:\Linlin-Agent"
+# 固定使用已確認的正式環境名稱與 F 槽專案位置，避免再次落到舊電腦路徑。
+$EnvironmentName = "Linlin_agent"
+$ProjectRoot = "F:\Linlin-Agent"
 
 if (-not (Get-Command conda -ErrorAction SilentlyContinue)) {
     throw "Conda is not available. Open Anaconda PowerShell Prompt."

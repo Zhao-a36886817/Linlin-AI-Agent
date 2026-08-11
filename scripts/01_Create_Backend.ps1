@@ -3,7 +3,7 @@
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
-$ProjectRoot = "C:\Linlin-Agent"
+$ProjectRoot = "F:\Linlin-Agent"
 $BackendRoot = "$ProjectRoot\backend"
 $ScriptsRoot = "$ProjectRoot\scripts"
 $EnvironmentName = "Linlin_agent"
@@ -423,7 +423,7 @@ Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
 $EnvironmentName = "Linlin_agent"
-$ProjectRoot = "C:\Linlin-Agent"
+$ProjectRoot = "F:\Linlin-Agent"
 $BackendRoot = "$ProjectRoot\backend"
 
 if ($env:CONDA_DEFAULT_ENV -ne $EnvironmentName) {
@@ -455,7 +455,7 @@ Write-FileUtf8 "$ScriptsRoot\test-backend.ps1" @'
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
-$ProjectRoot = "C:\Linlin-Agent"
+$ProjectRoot = "F:\Linlin-Agent"
 $BackendRoot = "$ProjectRoot\backend"
 
 Set-Location $BackendRoot
@@ -479,6 +479,6 @@ Write-Host ""
 Write-Host "Backend 建立完成。" -ForegroundColor Green
 Write-Host ""
 Write-Host "下一步執行：" -ForegroundColor Yellow
-Write-Host "cd C:\Linlin-Agent"
+Write-Host "cd F:\Linlin-Agent"
 Write-Host ".\scripts\start-backend.ps1"
 Write-Host ""

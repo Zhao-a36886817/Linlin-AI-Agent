@@ -1,0 +1,567 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-08-09T16:50:49.7708487Z",
+  "purpose": "Preserve an auditable mapping while moving phase artifacts out of the project root.",
+  "file_count": 62,
+  "files": [
+    {
+      "phase": "P0",
+      "old_path": "P0_REVIEW_PACKAGE.md",
+      "new_path": "docs/governance/phase-artifacts/P0/P0_REVIEW_PACKAGE.md",
+      "archive_path": "Linlin-Agent-Archive/2026-08-10-governance-layout/root-phase-artifacts-original/P0_REVIEW_PACKAGE.md",
+      "sha256": "d5ce4e9e4524f3645b39cb369dbfb6a075dbe4730225b2dd4e43357af999e8ac",
+      "active_sha256": "d5ce4e9e4524f3645b39cb369dbfb6a075dbe4730225b2dd4e43357af999e8ac",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "phase": "P0",
+      "old_path": "P0_SUPERVISOR_REVIEW_PACKAGE.md",
+      "new_path": "docs/governance/phase-artifacts/P0/P0_SUPERVISOR_REVIEW_PACKAGE.md",
+      "archive_path": "Linlin-Agent-Archive/2026-08-10-governance-layout/root-phase-artifacts-original/P0_SUPERVISOR_REVIEW_PACKAGE.md",
+      "sha256": "6cc2b2b39ef07ec4e77d4b3f1fbec7b779a117ca63ef7423db5767b31ef61bdb",
+      "active_sha256": "6cc2b2b39ef07ec4e77d4b3f1fbec7b779a117ca63ef7423db5767b31ef61bdb",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "phase": "P1",
+      "old_path": "P1_SUPERVISOR_REVIEW_PACKAGE.md",
+      "new_path": "docs/governance/phase-artifacts/P1/P1_SUPERVISOR_REVIEW_PACKAGE.md",
+      "archive_path": "Linlin-Agent-Archive/2026-08-10-governance-layout/root-phase-artifacts-original/P1_SUPERVISOR_REVIEW_PACKAGE.md",
+      "sha256": "ef9e2d45d93e8e61967f4d5125926ff19f39276c3d6e736d9e36d04d302d9bd5",
+      "active_sha256": "ef9e2d45d93e8e61967f4d5125926ff19f39276c3d6e736d9e36d04d302d9bd5",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "phase": "P10",
+      "old_path": "P10_COMPLETION_REPORT.md",
+      "new_path": "docs/governance/phase-artifacts/P10/P10_COMPLETION_REPORT.md",
+      "archive_path": "Linlin-Agent-Archive/2026-08-10-governance-layout/root-phase-artifacts-original/P10_COMPLETION_REPORT.md",
+      "sha256": "3f2f16e5e31d663cdfc64a58817057f8b3c0ed187cb1aa5c7cca21e58724e5b0",
+      "active_sha256": "3f2f16e5e31d663cdfc64a58817057f8b3c0ed187cb1aa5c7cca21e58724e5b0",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "phase": "P10",
+      "old_path": "P10_SUPERVISOR_REVIEW_PACKAGE.md",
+      "new_path": "docs/governance/phase-artifacts/P10/P10_SUPERVISOR_REVIEW_PACKAGE.md",
+      "archive_path": "Linlin-Agent-Archive/2026-08-10-governance-layout/root-phase-artifacts-original/P10_SUPERVISOR_REVIEW_PACKAGE.md",
+      "sha256": "de546cbf1242b881094de45537d3cd7d33ca0e0dc6fed19c7dcc379a207d0d28",
+      "active_sha256": "de546cbf1242b881094de45537d3cd7d33ca0e0dc6fed19c7dcc379a207d0d28",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "phase": "P11",
+      "old_path": "P11_COMPLETION_REPORT.md",
+      "new_path": "docs/governance/phase-artifacts/P11/P11_COMPLETION_REPORT.md",
+      "archive_path": "Linlin-Agent-Archive/2026-08-10-governance-layout/root-phase-artifacts-original/P11_COMPLETION_REPORT.md",
+      "sha256": "73d4d6f28fb4a8fcef10deb95372bc24c6ae04c0855d3acb73adc2f22af1929b",
+      "active_sha256": "73d4d6f28fb4a8fcef10deb95372bc24c6ae04c0855d3acb73adc2f22af1929b",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "phase": "P11",
+      "old_path": "P11_SUPERVISOR_REVIEW_PACKAGE.md",
+      "new_path": "docs/governance/phase-artifacts/P11/P11_SUPERVISOR_REVIEW_PACKAGE.md",
+      "archive_path": "Linlin-Agent-Archive/2026-08-10-governance-layout/root-phase-artifacts-original/P11_SUPERVISOR_REVIEW_PACKAGE.md",
+      "sha256": "2f2472fca32bd4d9f018fb8f5a0f61f3c3b4f149effe55b65cdd865ac017e66f",
+      "active_sha256": "2f2472fca32bd4d9f018fb8f5a0f61f3c3b4f149effe55b65cdd865ac017e66f",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "phase": "P12",
+      "old_path": "P12_COMPLETION_REPORT.md",
+      "new_path": "docs/governance/phase-artifacts/P12/P12_COMPLETION_REPORT.md",
+      "archive_path": "Linlin-Agent-Archive/2026-08-10-governance-layout/root-phase-artifacts-original/P12_COMPLETION_REPORT.md",
+      "sha256": "b79f79ed076e6a67825781f76e345086ec498a57cc368544e57e3498a875a901",
+      "active_sha256": "b79f79ed076e6a67825781f76e345086ec498a57cc368544e57e3498a875a901",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "phase": "P12",
+      "old_path": "P12_SUPERVISOR_REVIEW_PACKAGE.md",
+      "new_path": "docs/governance/phase-artifacts/P12/P12_SUPERVISOR_REVIEW_PACKAGE.md",
+      "archive_path": "Linlin-Agent-Archive/2026-08-10-governance-layout/root-phase-artifacts-original/P12_SUPERVISOR_REVIEW_PACKAGE.md",
+      "sha256": "56ac2f9d21bf8e49bdfec0253bc6e1be8637e4fada4f21c62811af51bcbbdade",
+      "active_sha256": "56ac2f9d21bf8e49bdfec0253bc6e1be8637e4fada4f21c62811af51bcbbdade",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "phase": "P13",
+      "old_path": "P13_COMPLETION_REPORT.md",
+      "new_path": "docs/governance/phase-artifacts/P13/P13_COMPLETION_REPORT.md",
+      "archive_path": "Linlin-Agent-Archive/2026-08-10-governance-layout/root-phase-artifacts-original/P13_COMPLETION_REPORT.md",
+      "sha256": "8fc060dfb3a96aabb1660b156431391be9fd25340a3e47fd099cd4aa3173d317",
+      "active_sha256": "8fc060dfb3a96aabb1660b156431391be9fd25340a3e47fd099cd4aa3173d317",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "phase": "P13",
+      "old_path": "P13_SUPERVISOR_REVIEW_PACKAGE.md",
+      "new_path": "docs/governance/phase-artifacts/P13/P13_SUPERVISOR_REVIEW_PACKAGE.md",
+      "archive_path": "Linlin-Agent-Archive/2026-08-10-governance-layout/root-phase-artifacts-original/P13_SUPERVISOR_REVIEW_PACKAGE.md",
+      "sha256": "c7f9c3f573cdda045a4624d1fc696c3da836c083063075a157d7972d0e69f311",
+      "active_sha256": "c7f9c3f573cdda045a4624d1fc696c3da836c083063075a157d7972d0e69f311",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "phase": "P14",
+      "old_path": "P14_COMPLETION_REPORT.md",
+      "new_path": "docs/governance/phase-artifacts/P14/P14_COMPLETION_REPORT.md",
+      "archive_path": "Linlin-Agent-Archive/2026-08-10-governance-layout/root-phase-artifacts-original/P14_COMPLETION_REPORT.md",
+      "sha256": "66c7a0dd7de1a0936b65ad26108b4f357719c7520fa15d565af6c677b4f7f7d5",
+      "active_sha256": "66c7a0dd7de1a0936b65ad26108b4f357719c7520fa15d565af6c677b4f7f7d5",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "phase": "P14",
+      "old_path": "P14_SUPERVISOR_REVIEW_PACKAGE.md",
+      "new_path": "docs/governance/phase-artifacts/P14/P14_SUPERVISOR_REVIEW_PACKAGE.md",
+      "archive_path": "Linlin-Agent-Archive/2026-08-10-governance-layout/root-phase-artifacts-original/P14_SUPERVISOR_REVIEW_PACKAGE.md",
+      "sha256": "25c520154a20aa2a2b139afb44989aaf6b12cfc838bbbfad4bfcf2d50c3cff02",
+      "active_sha256": "25c520154a20aa2a2b139afb44989aaf6b12cfc838bbbfad4bfcf2d50c3cff02",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "phase": "P15",
+      "old_path": "P15_COMPLETION_REPORT.md",
+      "new_path": "docs/governance/phase-artifacts/P15/P15_COMPLETION_REPORT.md",
+      "archive_path": "Linlin-Agent-Archive/2026-08-10-governance-layout/root-phase-artifacts-original/P15_COMPLETION_REPORT.md",
+      "sha256": "0b0699ded92063d484943cfe7334a76a6ed8347bbf3ccd6c1ccabf8f1da4ca47",
+      "active_sha256": "0b0699ded92063d484943cfe7334a76a6ed8347bbf3ccd6c1ccabf8f1da4ca47",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "phase": "P15",
+      "old_path": "P15_SUPERVISOR_REVIEW_PACKAGE.md",
+      "new_path": "docs/governance/phase-artifacts/P15/P15_SUPERVISOR_REVIEW_PACKAGE.md",
+      "archive_path": "Linlin-Agent-Archive/2026-08-10-governance-layout/root-phase-artifacts-original/P15_SUPERVISOR_REVIEW_PACKAGE.md",
+      "sha256": "ec4354127cce71945d12304a9d138eb58e06cc5969493a7ea13d1579249c3b04",
+      "active_sha256": "ec4354127cce71945d12304a9d138eb58e06cc5969493a7ea13d1579249c3b04",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "phase": "P16",
+      "old_path": "P16_COMPLETION_REPORT.md",
+      "new_path": "docs/governance/phase-artifacts/P16/P16_COMPLETION_REPORT.md",
+      "archive_path": "Linlin-Agent-Archive/2026-08-10-governance-layout/root-phase-artifacts-original/P16_COMPLETION_REPORT.md",
+      "sha256": "368ec480d075f8104656e934873c3d9205724f1d712fba46f791fa11cb1512a0",
+      "active_sha256": "368ec480d075f8104656e934873c3d9205724f1d712fba46f791fa11cb1512a0",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "phase": "P16",
+      "old_path": "P16_SUPERVISOR_REVIEW_PACKAGE.md",
+      "new_path": "docs/governance/phase-artifacts/P16/P16_SUPERVISOR_REVIEW_PACKAGE.md",
+      "archive_path": "Linlin-Agent-Archive/2026-08-10-governance-layout/root-phase-artifacts-original/P16_SUPERVISOR_REVIEW_PACKAGE.md",
+      "sha256": "c419cd4420454f8ced70c8c7f6bc3bbc0ffa0233ab76beb90d0aeca2349b7004",
+      "active_sha256": "c419cd4420454f8ced70c8c7f6bc3bbc0ffa0233ab76beb90d0aeca2349b7004",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "phase": "P17",
+      "old_path": "P17_COMPLETION_REPORT.md",
+      "new_path": "docs/governance/phase-artifacts/P17/P17_COMPLETION_REPORT.md",
+      "archive_path": "Linlin-Agent-Archive/2026-08-10-governance-layout/root-phase-artifacts-original/P17_COMPLETION_REPORT.md",
+      "sha256": "f172ce7d53bedf788fc2a16c32e12557cdbf206ee605d9baacb3d30e0aaf342f",
+      "active_sha256": "f172ce7d53bedf788fc2a16c32e12557cdbf206ee605d9baacb3d30e0aaf342f",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "phase": "P17",
+      "old_path": "P17_SUPERVISOR_REVIEW_PACKAGE.md",
+      "new_path": "docs/governance/phase-artifacts/P17/P17_SUPERVISOR_REVIEW_PACKAGE.md",
+      "archive_path": "Linlin-Agent-Archive/2026-08-10-governance-layout/root-phase-artifacts-original/P17_SUPERVISOR_REVIEW_PACKAGE.md",
+      "sha256": "14a2af2070a88686e116e090de0dc0ec4953e13518e85c4cc6f0463db5b05b5f",
+      "active_sha256": "14a2af2070a88686e116e090de0dc0ec4953e13518e85c4cc6f0463db5b05b5f",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "phase": "P18",
+      "old_path": "P18_COMPLETION_REPORT.md",
+      "new_path": "docs/governance/phase-artifacts/P18/P18_COMPLETION_REPORT.md",
+      "archive_path": "Linlin-Agent-Archive/2026-08-10-governance-layout/root-phase-artifacts-original/P18_COMPLETION_REPORT.md",
+      "sha256": "93bb812fba5bd5b5ea24c7e0f9d759c006816374abfb8b87377f919ceeb1b6da",
+      "active_sha256": "93bb812fba5bd5b5ea24c7e0f9d759c006816374abfb8b87377f919ceeb1b6da",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "phase": "P18",
+      "old_path": "P18_SUPERVISOR_REVIEW_PACKAGE.md",
+      "new_path": "docs/governance/phase-artifacts/P18/P18_SUPERVISOR_REVIEW_PACKAGE.md",
+      "archive_path": "Linlin-Agent-Archive/2026-08-10-governance-layout/root-phase-artifacts-original/P18_SUPERVISOR_REVIEW_PACKAGE.md",
+      "sha256": "c578cc86652feef1656328adc44c4a96f35b9911cb690208db6d21a1164d3cc9",
+      "active_sha256": "c578cc86652feef1656328adc44c4a96f35b9911cb690208db6d21a1164d3cc9",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "phase": "P19",
+      "old_path": "P19_COMPLETION_REPORT.md",
+      "new_path": "docs/governance/phase-artifacts/P19/P19_COMPLETION_REPORT.md",
+      "archive_path": "Linlin-Agent-Archive/2026-08-10-governance-layout/root-phase-artifacts-original/P19_COMPLETION_REPORT.md",
+      "sha256": "5607f919c89ac7e912594feeacb9a44a3bf5e11adec10e2a6bd205511786fafd",
+      "active_sha256": "5607f919c89ac7e912594feeacb9a44a3bf5e11adec10e2a6bd205511786fafd",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "phase": "P19",
+      "old_path": "P19_SUPERVISOR_REVIEW_PACKAGE.md",
+      "new_path": "docs/governance/phase-artifacts/P19/P19_SUPERVISOR_REVIEW_PACKAGE.md",
+      "archive_path": "Linlin-Agent-Archive/2026-08-10-governance-layout/root-phase-artifacts-original/P19_SUPERVISOR_REVIEW_PACKAGE.md",
+      "sha256": "dc6d9ff9c63b017081a6393cc0e885af7d683724d2bce65f739a1a91ca83a319",
+      "active_sha256": "dc6d9ff9c63b017081a6393cc0e885af7d683724d2bce65f739a1a91ca83a319",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "phase": "P2",
+      "old_path": "P2_SUPERVISOR_REVIEW_PACKAGE.md",
+      "new_path": "docs/governance/phase-artifacts/P2/P2_SUPERVISOR_REVIEW_PACKAGE.md",
+      "archive_path": "Linlin-Agent-Archive/2026-08-10-governance-layout/root-phase-artifacts-original/P2_SUPERVISOR_REVIEW_PACKAGE.md",
+      "sha256": "6c6db8fd63bfae977057cfac79efbf6777da479232faff607fdf2196e6df4665",
+      "active_sha256": "6c6db8fd63bfae977057cfac79efbf6777da479232faff607fdf2196e6df4665",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "phase": "P20",
+      "old_path": "P20_COMPLETION_REPORT.md",
+      "new_path": "docs/governance/phase-artifacts/P20/P20_COMPLETION_REPORT.md",
+      "archive_path": "Linlin-Agent-Archive/2026-08-10-governance-layout/root-phase-artifacts-original/P20_COMPLETION_REPORT.md",
+      "sha256": "fd41dada60fe3a736fb7c7b44587ced52688a7bf9e28927172e32d3f84f1a215",
+      "active_sha256": "fd41dada60fe3a736fb7c7b44587ced52688a7bf9e28927172e32d3f84f1a215",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "phase": "P20",
+      "old_path": "P20_SUPERVISOR_REVIEW_PACKAGE.md",
+      "new_path": "docs/governance/phase-artifacts/P20/P20_SUPERVISOR_REVIEW_PACKAGE.md",
+      "archive_path": "Linlin-Agent-Archive/2026-08-10-governance-layout/root-phase-artifacts-original/P20_SUPERVISOR_REVIEW_PACKAGE.md",
+      "sha256": "f46097c8418674586138db2489b432370fc8a774166cd03084d339845a76db0a",
+      "active_sha256": "f46097c8418674586138db2489b432370fc8a774166cd03084d339845a76db0a",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "phase": "P21",
+      "old_path": "P21_COMPLETION_REPORT.md",
+      "new_path": "docs/governance/phase-artifacts/P21/P21_COMPLETION_REPORT.md",
+      "archive_path": "Linlin-Agent-Archive/2026-08-10-governance-layout/root-phase-artifacts-original/P21_COMPLETION_REPORT.md",
+      "sha256": "86d4b8baf04c87d9c5037e3d84464d6ac8ca9e44a1ea5099401de5fdb707e094",
+      "active_sha256": "86d4b8baf04c87d9c5037e3d84464d6ac8ca9e44a1ea5099401de5fdb707e094",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "phase": "P21",
+      "old_path": "P21_SUPERVISOR_REVIEW_PACKAGE.md",
+      "new_path": "docs/governance/phase-artifacts/P21/P21_SUPERVISOR_REVIEW_PACKAGE.md",
+      "archive_path": "Linlin-Agent-Archive/2026-08-10-governance-layout/root-phase-artifacts-original/P21_SUPERVISOR_REVIEW_PACKAGE.md",
+      "sha256": "36523921782447f8370f551ef72dd5802ea2e73697cc8bd26eb4e3117bdfd7bb",
+      "active_sha256": "36523921782447f8370f551ef72dd5802ea2e73697cc8bd26eb4e3117bdfd7bb",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "phase": "P22",
+      "old_path": "P22_COMPLETION_REPORT.md",
+      "new_path": "docs/governance/phase-artifacts/P22/P22_COMPLETION_REPORT.md",
+      "archive_path": "Linlin-Agent-Archive/2026-08-10-governance-layout/root-phase-artifacts-original/P22_COMPLETION_REPORT.md",
+      "sha256": "3574715b4b88f6689a6e3eae4289df394cab7662021bc41b05b2fd3f71eb89da",
+      "active_sha256": "3574715b4b88f6689a6e3eae4289df394cab7662021bc41b05b2fd3f71eb89da",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "phase": "P22",
+      "old_path": "P22_SUPERVISOR_REVIEW_PACKAGE.md",
+      "new_path": "docs/governance/phase-artifacts/P22/P22_SUPERVISOR_REVIEW_PACKAGE.md",
+      "archive_path": "Linlin-Agent-Archive/2026-08-10-governance-layout/root-phase-artifacts-original/P22_SUPERVISOR_REVIEW_PACKAGE.md",
+      "sha256": "fe98368cfa309e9e476a6a231a9fac9f46711779ef585b18d22ca9674ffbd88b",
+      "active_sha256": "fe98368cfa309e9e476a6a231a9fac9f46711779ef585b18d22ca9674ffbd88b",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "phase": "P23",
+      "old_path": "P23_COMPLETION_REPORT.md",
+      "new_path": "docs/governance/phase-artifacts/P23/P23_COMPLETION_REPORT.md",
+      "archive_path": "Linlin-Agent-Archive/2026-08-10-governance-layout/root-phase-artifacts-original/P23_COMPLETION_REPORT.md",
+      "sha256": "71599580ae200d33b1688b341c925812727b585ece6cddfb38a2b7d124378ad3",
+      "active_sha256": "71599580ae200d33b1688b341c925812727b585ece6cddfb38a2b7d124378ad3",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "phase": "P23",
+      "old_path": "P23_SUPERVISOR_REVIEW_PACKAGE.md",
+      "new_path": "docs/governance/phase-artifacts/P23/P23_SUPERVISOR_REVIEW_PACKAGE.md",
+      "archive_path": "Linlin-Agent-Archive/2026-08-10-governance-layout/root-phase-artifacts-original/P23_SUPERVISOR_REVIEW_PACKAGE.md",
+      "sha256": "eca0a874fda4dcbbeec91781452efdd08aaa9d34d98c99d3a2ad4819a692da26",
+      "active_sha256": "eca0a874fda4dcbbeec91781452efdd08aaa9d34d98c99d3a2ad4819a692da26",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "phase": "P24",
+      "old_path": "P24_COMPLETION_REPORT.md",
+      "new_path": "docs/governance/phase-artifacts/P24/P24_COMPLETION_REPORT.md",
+      "archive_path": "Linlin-Agent-Archive/2026-08-10-governance-layout/root-phase-artifacts-original/P24_COMPLETION_REPORT.md",
+      "sha256": "1b969098c933a2747001c782645edf1003309df59f03f86d9693be3d687e268f",
+      "active_sha256": "1b969098c933a2747001c782645edf1003309df59f03f86d9693be3d687e268f",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "phase": "P24",
+      "old_path": "P24_EVIDENCE_INDEX.json",
+      "new_path": "docs/governance/phase-artifacts/P24/P24_EVIDENCE_INDEX.json",
+      "archive_path": "Linlin-Agent-Archive/2026-08-10-governance-layout/root-phase-artifacts-original/P24_EVIDENCE_INDEX.json",
+      "sha256": "e7d572b450cb94e8b221bbcdae8b4ab5fb1ce6354b691908ae1407a8af605332",
+      "active_sha256": "ef9aed21d3ab31d3e4a18366ef7578ffdf8c2ffb43a313ea3fb53497621d7851",
+      "content_changed_for_path_relocation": true
+    },
+    {
+      "phase": "P24",
+      "old_path": "P24_RC_DECISION.yaml",
+      "new_path": "docs/governance/phase-artifacts/P24/P24_RC_DECISION.yaml",
+      "archive_path": "Linlin-Agent-Archive/2026-08-10-governance-layout/root-phase-artifacts-original/P24_RC_DECISION.yaml",
+      "sha256": "8e8249cf9f4a8cc1fe0d02d8b1de8832916abae397ba58e41747c7d242cf2a0d",
+      "active_sha256": "8e8249cf9f4a8cc1fe0d02d8b1de8832916abae397ba58e41747c7d242cf2a0d",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "phase": "P24",
+      "old_path": "P24_SUPERVISOR_REVIEW_PACKAGE.md",
+      "new_path": "docs/governance/phase-artifacts/P24/P24_SUPERVISOR_REVIEW_PACKAGE.md",
+      "archive_path": "Linlin-Agent-Archive/2026-08-10-governance-layout/root-phase-artifacts-original/P24_SUPERVISOR_REVIEW_PACKAGE.md",
+      "sha256": "a614c44e32cb3de7e16d2bd5a198ecf1e7051145c501069c23ae8500f09f4094",
+      "active_sha256": "a614c44e32cb3de7e16d2bd5a198ecf1e7051145c501069c23ae8500f09f4094",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "phase": "P25",
+      "old_path": "P25_COMPLETION_REPORT.md",
+      "new_path": "docs/governance/phase-artifacts/P25/P25_COMPLETION_REPORT.md",
+      "archive_path": "Linlin-Agent-Archive/2026-08-10-governance-layout/root-phase-artifacts-original/P25_COMPLETION_REPORT.md",
+      "sha256": "55f3a684432a5c3353dc6fe597d007dcc7006c89260ea8b31ba262e17a40aae1",
+      "active_sha256": "55f3a684432a5c3353dc6fe597d007dcc7006c89260ea8b31ba262e17a40aae1",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "phase": "P25",
+      "old_path": "P25_SUPERVISOR_REVIEW_PACKAGE.md",
+      "new_path": "docs/governance/phase-artifacts/P25/P25_SUPERVISOR_REVIEW_PACKAGE.md",
+      "archive_path": "Linlin-Agent-Archive/2026-08-10-governance-layout/root-phase-artifacts-original/P25_SUPERVISOR_REVIEW_PACKAGE.md",
+      "sha256": "007c4bc8414083a66f36e8b920013ae7d13d008a4c12fb820242fc56ca4ce64f",
+      "active_sha256": "007c4bc8414083a66f36e8b920013ae7d13d008a4c12fb820242fc56ca4ce64f",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "phase": "P26",
+      "old_path": "P26_COMPLETION_REPORT.md",
+      "new_path": "docs/governance/phase-artifacts/P26/P26_COMPLETION_REPORT.md",
+      "archive_path": "Linlin-Agent-Archive/2026-08-10-governance-layout/root-phase-artifacts-original/P26_COMPLETION_REPORT.md",
+      "sha256": "b1e001bd37c9ebcec1bdf864d917ded3106031f226260bb9b1c6d57f63386264",
+      "active_sha256": "b1e001bd37c9ebcec1bdf864d917ded3106031f226260bb9b1c6d57f63386264",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "phase": "P26",
+      "old_path": "P26_SUPERVISOR_REVIEW_PACKAGE.md",
+      "new_path": "docs/governance/phase-artifacts/P26/P26_SUPERVISOR_REVIEW_PACKAGE.md",
+      "archive_path": "Linlin-Agent-Archive/2026-08-10-governance-layout/root-phase-artifacts-original/P26_SUPERVISOR_REVIEW_PACKAGE.md",
+      "sha256": "2b1604c0f0ede5b2f3847b7bfc96504b77ba90e733480fa59133ded44dc4eb63",
+      "active_sha256": "2b1604c0f0ede5b2f3847b7bfc96504b77ba90e733480fa59133ded44dc4eb63",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "phase": "P27",
+      "old_path": "P27_COMPLETION_REPORT.md",
+      "new_path": "docs/governance/phase-artifacts/P27/P27_COMPLETION_REPORT.md",
+      "archive_path": "Linlin-Agent-Archive/2026-08-10-governance-layout/root-phase-artifacts-original/P27_COMPLETION_REPORT.md",
+      "sha256": "3219c03065373cbfe102037a6553f29c732d6b5bfdbc14c88d2e0c93ed43e4e1",
+      "active_sha256": "3219c03065373cbfe102037a6553f29c732d6b5bfdbc14c88d2e0c93ed43e4e1",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "phase": "P27",
+      "old_path": "P27_SUPERVISOR_REVIEW_PACKAGE.md",
+      "new_path": "docs/governance/phase-artifacts/P27/P27_SUPERVISOR_REVIEW_PACKAGE.md",
+      "archive_path": "Linlin-Agent-Archive/2026-08-10-governance-layout/root-phase-artifacts-original/P27_SUPERVISOR_REVIEW_PACKAGE.md",
+      "sha256": "718059771ac0c86ae721ed4f92b23bc7b8338d7d017d143c3769c98639ef00dd",
+      "active_sha256": "718059771ac0c86ae721ed4f92b23bc7b8338d7d017d143c3769c98639ef00dd",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "phase": "P28",
+      "old_path": "P28_COMPLETION_REPORT.md",
+      "new_path": "docs/governance/phase-artifacts/P28/P28_COMPLETION_REPORT.md",
+      "archive_path": "Linlin-Agent-Archive/2026-08-10-governance-layout/root-phase-artifacts-original/P28_COMPLETION_REPORT.md",
+      "sha256": "cf5735015df1ca5f8b0ef5a77169f2366cb2a302af7ae42d71288e648cb8df53",
+      "active_sha256": "cf5735015df1ca5f8b0ef5a77169f2366cb2a302af7ae42d71288e648cb8df53",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "phase": "P28",
+      "old_path": "P28_SUPERVISOR_REVIEW_PACKAGE.md",
+      "new_path": "docs/governance/phase-artifacts/P28/P28_SUPERVISOR_REVIEW_PACKAGE.md",
+      "archive_path": "Linlin-Agent-Archive/2026-08-10-governance-layout/root-phase-artifacts-original/P28_SUPERVISOR_REVIEW_PACKAGE.md",
+      "sha256": "54ddd145a986cf8bcaa9a89211a987f891047aebe7e34dd0b30963156ab5c698",
+      "active_sha256": "54ddd145a986cf8bcaa9a89211a987f891047aebe7e34dd0b30963156ab5c698",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "phase": "P29",
+      "old_path": "P29_COMPLETION_REPORT.md",
+      "new_path": "docs/governance/phase-artifacts/P29/P29_COMPLETION_REPORT.md",
+      "archive_path": "Linlin-Agent-Archive/2026-08-10-governance-layout/root-phase-artifacts-original/P29_COMPLETION_REPORT.md",
+      "sha256": "36785d0eddfd41e8046720cd234475bba2c13eda780080771a75884c87ef5aa3",
+      "active_sha256": "36785d0eddfd41e8046720cd234475bba2c13eda780080771a75884c87ef5aa3",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "phase": "P29",
+      "old_path": "P29_SUPERVISOR_REVIEW_PACKAGE.md",
+      "new_path": "docs/governance/phase-artifacts/P29/P29_SUPERVISOR_REVIEW_PACKAGE.md",
+      "archive_path": "Linlin-Agent-Archive/2026-08-10-governance-layout/root-phase-artifacts-original/P29_SUPERVISOR_REVIEW_PACKAGE.md",
+      "sha256": "407d2f2e4cccadc10fe960dd43f9eea2286d65d8ca0c07f3ac9c6444ea5f552c",
+      "active_sha256": "407d2f2e4cccadc10fe960dd43f9eea2286d65d8ca0c07f3ac9c6444ea5f552c",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "phase": "P3",
+      "old_path": "P3_SUPERVISOR_REVIEW_PACKAGE.md",
+      "new_path": "docs/governance/phase-artifacts/P3/P3_SUPERVISOR_REVIEW_PACKAGE.md",
+      "archive_path": "Linlin-Agent-Archive/2026-08-10-governance-layout/root-phase-artifacts-original/P3_SUPERVISOR_REVIEW_PACKAGE.md",
+      "sha256": "fc37ecf18918ad0d34f43debe5f213808edd7d22229d740cc12977dd2682343c",
+      "active_sha256": "fc37ecf18918ad0d34f43debe5f213808edd7d22229d740cc12977dd2682343c",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "phase": "P30",
+      "old_path": "P30_SUPERVISOR_REVIEW_PACKAGE.md",
+      "new_path": "docs/governance/phase-artifacts/P30/P30_SUPERVISOR_REVIEW_PACKAGE.md",
+      "archive_path": "Linlin-Agent-Archive/2026-08-10-governance-layout/root-phase-artifacts-original/P30_SUPERVISOR_REVIEW_PACKAGE.md",
+      "sha256": "529cc674b8b19b0ff39c2802ce9a9c771877b5536c344b0794b09607afb468de",
+      "active_sha256": "529cc674b8b19b0ff39c2802ce9a9c771877b5536c344b0794b09607afb468de",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "phase": "P31",
+      "old_path": "P31_COMPLETION_REPORT.md",
+      "new_path": "docs/governance/phase-artifacts/P31/P31_COMPLETION_REPORT.md",
+      "archive_path": "Linlin-Agent-Archive/2026-08-10-governance-layout/root-phase-artifacts-original/P31_COMPLETION_REPORT.md",
+      "sha256": "d27f2476a190b1631d5d01577d7c28908a242b446338021a34c4c17dfa5015ca",
+      "active_sha256": "d27f2476a190b1631d5d01577d7c28908a242b446338021a34c4c17dfa5015ca",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "phase": "P31",
+      "old_path": "P31_SUPERVISOR_REVIEW_PACKAGE.md",
+      "new_path": "docs/governance/phase-artifacts/P31/P31_SUPERVISOR_REVIEW_PACKAGE.md",
+      "archive_path": "Linlin-Agent-Archive/2026-08-10-governance-layout/root-phase-artifacts-original/P31_SUPERVISOR_REVIEW_PACKAGE.md",
+      "sha256": "41778426d49846545462d404e7ca8c16606458a1585b38314ceefdf798272444",
+      "active_sha256": "41778426d49846545462d404e7ca8c16606458a1585b38314ceefdf798272444",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "phase": "P32",
+      "old_path": "P32_COMPLETION_REPORT.md",
+      "new_path": "docs/governance/phase-artifacts/P32/P32_COMPLETION_REPORT.md",
+      "archive_path": "Linlin-Agent-Archive/2026-08-10-governance-layout/root-phase-artifacts-original/P32_COMPLETION_REPORT.md",
+      "sha256": "52287f579a6a075ffebb7b21aa4d4e90650d729d6c552afe04d840f87ddf8f17",
+      "active_sha256": "52287f579a6a075ffebb7b21aa4d4e90650d729d6c552afe04d840f87ddf8f17",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "phase": "P32",
+      "old_path": "P32_SUPERVISOR_REVIEW_PACKAGE.md",
+      "new_path": "docs/governance/phase-artifacts/P32/P32_SUPERVISOR_REVIEW_PACKAGE.md",
+      "archive_path": "Linlin-Agent-Archive/2026-08-10-governance-layout/root-phase-artifacts-original/P32_SUPERVISOR_REVIEW_PACKAGE.md",
+      "sha256": "296c9e461b7edf6dcf4d39e542bbe6ccec80ad0a9eb3aac7de1c8e15f1b9e8c9",
+      "active_sha256": "296c9e461b7edf6dcf4d39e542bbe6ccec80ad0a9eb3aac7de1c8e15f1b9e8c9",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "phase": "P33",
+      "old_path": "P33_COMPLETION_REPORT.md",
+      "new_path": "docs/governance/phase-artifacts/P33/P33_COMPLETION_REPORT.md",
+      "archive_path": "Linlin-Agent-Archive/2026-08-10-governance-layout/root-phase-artifacts-original/P33_COMPLETION_REPORT.md",
+      "sha256": "89333333664d6dc30773f3c7ce157b75e886626865b5e5c6da5318633853083a",
+      "active_sha256": "89333333664d6dc30773f3c7ce157b75e886626865b5e5c6da5318633853083a",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "phase": "P33",
+      "old_path": "P33_SUPERVISOR_REVIEW_PACKAGE.md",
+      "new_path": "docs/governance/phase-artifacts/P33/P33_SUPERVISOR_REVIEW_PACKAGE.md",
+      "archive_path": "Linlin-Agent-Archive/2026-08-10-governance-layout/root-phase-artifacts-original/P33_SUPERVISOR_REVIEW_PACKAGE.md",
+      "sha256": "4a430870877103f87f7f1faa8cec69f126a8c53836f77444eabe0ea2e0dcca17",
+      "active_sha256": "4a430870877103f87f7f1faa8cec69f126a8c53836f77444eabe0ea2e0dcca17",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "phase": "P34",
+      "old_path": "P34_COMPLETION_REPORT.md",
+      "new_path": "docs/governance/phase-artifacts/P34/P34_COMPLETION_REPORT.md",
+      "archive_path": "Linlin-Agent-Archive/2026-08-10-governance-layout/root-phase-artifacts-original/P34_COMPLETION_REPORT.md",
+      "sha256": "011d916ac303e9584e18c2ce81b9966459af3b88b58107b339895ca8627ea550",
+      "active_sha256": "011d916ac303e9584e18c2ce81b9966459af3b88b58107b339895ca8627ea550",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "phase": "P34",
+      "old_path": "P34_SUPERVISOR_REVIEW_PACKAGE.md",
+      "new_path": "docs/governance/phase-artifacts/P34/P34_SUPERVISOR_REVIEW_PACKAGE.md",
+      "archive_path": "Linlin-Agent-Archive/2026-08-10-governance-layout/root-phase-artifacts-original/P34_SUPERVISOR_REVIEW_PACKAGE.md",
+      "sha256": "68da54962c9e8a238318f92436bdc7a3f6b976770fa16a3697716f818ad3b84f",
+      "active_sha256": "68da54962c9e8a238318f92436bdc7a3f6b976770fa16a3697716f818ad3b84f",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "phase": "P4",
+      "old_path": "P4_SUPERVISOR_REVIEW_PACKAGE.md",
+      "new_path": "docs/governance/phase-artifacts/P4/P4_SUPERVISOR_REVIEW_PACKAGE.md",
+      "archive_path": "Linlin-Agent-Archive/2026-08-10-governance-layout/root-phase-artifacts-original/P4_SUPERVISOR_REVIEW_PACKAGE.md",
+      "sha256": "c3372a2a7e5f4f18bbb9ed3fbeb9ac0bd7182efecd98fa415e4ecfa2595b84b6",
+      "active_sha256": "c3372a2a7e5f4f18bbb9ed3fbeb9ac0bd7182efecd98fa415e4ecfa2595b84b6",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "phase": "P5",
+      "old_path": "P5_SUPERVISOR_REVIEW_PACKAGE.md",
+      "new_path": "docs/governance/phase-artifacts/P5/P5_SUPERVISOR_REVIEW_PACKAGE.md",
+      "archive_path": "Linlin-Agent-Archive/2026-08-10-governance-layout/root-phase-artifacts-original/P5_SUPERVISOR_REVIEW_PACKAGE.md",
+      "sha256": "f5e973331582ca875fed1af3809ed8d2afecd2adee6ada3c4d8579bbbfba2662",
+      "active_sha256": "f5e973331582ca875fed1af3809ed8d2afecd2adee6ada3c4d8579bbbfba2662",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "phase": "P6",
+      "old_path": "P6_SUPERVISOR_REVIEW_PACKAGE.md",
+      "new_path": "docs/governance/phase-artifacts/P6/P6_SUPERVISOR_REVIEW_PACKAGE.md",
+      "archive_path": "Linlin-Agent-Archive/2026-08-10-governance-layout/root-phase-artifacts-original/P6_SUPERVISOR_REVIEW_PACKAGE.md",
+      "sha256": "727593827810d1acd987a2098b01fe425111dbd78c69c93a36dec92b666e119e",
+      "active_sha256": "727593827810d1acd987a2098b01fe425111dbd78c69c93a36dec92b666e119e",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "phase": "P7",
+      "old_path": "P7_SUPERVISOR_REVIEW_PACKAGE.md",
+      "new_path": "docs/governance/phase-artifacts/P7/P7_SUPERVISOR_REVIEW_PACKAGE.md",
+      "archive_path": "Linlin-Agent-Archive/2026-08-10-governance-layout/root-phase-artifacts-original/P7_SUPERVISOR_REVIEW_PACKAGE.md",
+      "sha256": "6ec26e918f8b24ae1dd5d79763ac1b40e765b4177b9d3ddd1eb3f9830226716b",
+      "active_sha256": "6ec26e918f8b24ae1dd5d79763ac1b40e765b4177b9d3ddd1eb3f9830226716b",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "phase": "P8",
+      "old_path": "P8_SUPERVISOR_REVIEW_PACKAGE.md",
+      "new_path": "docs/governance/phase-artifacts/P8/P8_SUPERVISOR_REVIEW_PACKAGE.md",
+      "archive_path": "Linlin-Agent-Archive/2026-08-10-governance-layout/root-phase-artifacts-original/P8_SUPERVISOR_REVIEW_PACKAGE.md",
+      "sha256": "6e53974b65445b71d6eac4bd3edb02e7685534bd21c9b134d7e6bfca74c2b136",
+      "active_sha256": "6e53974b65445b71d6eac4bd3edb02e7685534bd21c9b134d7e6bfca74c2b136",
+      "content_changed_for_path_relocation": false
+    },
+    {
+      "phase": "P9",
+      "old_path": "P9_SUPERVISOR_REVIEW_PACKAGE.md",
+      "new_path": "docs/governance/phase-artifacts/P9/P9_SUPERVISOR_REVIEW_PACKAGE.md",
+      "archive_path": "Linlin-Agent-Archive/2026-08-10-governance-layout/root-phase-artifacts-original/P9_SUPERVISOR_REVIEW_PACKAGE.md",
+      "sha256": "70983a4e99e6caa3211fb04e84624d7dd39d79afb9ec7d243a84f3b988889f87",
+      "active_sha256": "70983a4e99e6caa3211fb04e84624d7dd39d79afb9ec7d243a84f3b988889f87",
+      "content_changed_for_path_relocation": false
+    }
+  ],
+  "active_verification_at": "2026-08-09T16:54:16.8658388Z"
+}

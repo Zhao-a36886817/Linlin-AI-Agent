@@ -1,0 +1,7 @@
+schema_version: 1
+decision: NO_GO
+owner: project-owner
+recorded_at: "2026-08-09T21:25:33+08:00"
+rationale: >-
+  The owner accepts the P24 NO-GO recommendation because seven unresolved High
+  release blockers prevent a trustworthy, source-bound v1.0 release candidate.

@@ -1,0 +1,36 @@
+laes_version: "1.1"
+
+current_phase: "P20"
+title: "Desktop Packaging, Installer, and Auto-Update"
+status: "READY"
+
+next_phase: "P21"
+automatically_continue_next_phase: false
+owner_must_advance_phase: true
+
+review:
+  required: true
+  architecture_reviewer: "ChatGPT"
+  owner_approval_required: true
+  status: "NOT_STARTED"
+
+rules:
+  minimum_change: true
+  architecture_changes_allowed: true
+  new_features_allowed: false
+  unrelated_refactoring_allowed: false
+  framework_replacement_allowed: false
+  tests_may_be_disabled: false
+  security_controls_may_be_bypassed: false
+  preserve_cross_platform: true
+
+required_reading:
+  - "AI_COLLABORATION_CHARTER.md"
+  - "AGENTS.md"
+  - "docs/standards/Engineering_Standard.md"
+  - "docs/architecture/System_Architecture.md"
+  - "docs/standards/Testing_Standard.md"
+  - "docs/standards/Security_Standard.md"
+  - "docs/standards/Cross_Platform_Standard.md"
+  - "docs/development/P20.md"
+

@@ -1,0 +1,88 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: backend/pyproject.toml
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+          package-manager-cache: true
+      - name: Linux desktop prerequisites
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
+      - name: Install backend
+        run: python -m pip install -e "./backend[dev]"
+      - name: Backend compile
+        run: python -m compileall backend/app backend/tests
+      - name: Backend lint
+        run: python -m ruff check backend/app backend/tests
+      - name: Backend tests
+        run: python -m pytest backend/tests -q
+      - name: Install frontend
+        run: npm ci --prefix frontend
+      - name: Frontend build
+        run: npm --prefix frontend run build
+      - name: Frontend lint
+        run: npm --prefix frontend run lint
+      - name: Tauri compile
+        run: cargo check --manifest-path desktop/src-tauri/Cargo.toml --locked
+
+  supply-chain:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: "24"
+          package-manager-cache: false
+      - name: Secret scan
+        run: python scripts/supply_chain.py scan
+      - name: Generate deterministic SBOM
+        run: python scripts/supply_chain.py sbom --output build/sbom.cdx.json
+      - name: Python dependency audit
+        run: |
+          python -m pip install pip-audit==2.9.0
+          python scripts/supply_chain.py requirements --output build/backend-requirements.txt
+          pip-audit --requirement build/backend-requirements.txt --strict
+      - name: Frontend dependency audit
+        run: npm audit --prefix frontend --audit-level=high
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: linlin-agent-sbom
+          path: build/sbom.cdx.json
+          if-no-files-found: error
+          retention-days: 30

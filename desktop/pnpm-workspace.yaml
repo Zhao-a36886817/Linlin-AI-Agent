@@ -1,2 +1,5 @@
+# F: 是 exFAT，可攜磁碟不支援目錄符號連結；使用一般目錄式依賴佈局。
+nodeLinker: hoisted
+
 allowBuilds:
   esbuild: true

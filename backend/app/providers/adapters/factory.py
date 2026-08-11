@@ -1,15 +1,8 @@
-from __future__ import annotations
+"""Compatibility import for the canonical provider factory.
 
-from app.providers.registry import registry
+New code must import :class:`ProviderFactory` from ``app.providers.factory``.
+"""
 
+from app.providers.factory import ProviderFactory
 
-class ProviderFactory:
-    @staticmethod
-    def create(
-        provider_name: str,
-        **kwargs,
-    ):
-
-        provider_cls = registry.get(provider_name)
-
-        return provider_cls(**kwargs)
+__all__ = ["ProviderFactory"]

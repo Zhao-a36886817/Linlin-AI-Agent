@@ -1,0 +1,41 @@
+Linlin Agent 專案轉移包
+======================
+
+用途
+----
+此封裝用於把目前的開發工作區搬到另一台 Windows 電腦。它保留原始碼、Git 歷史、
+未提交與未追蹤成果、LAES 治理資料、文件及本機 Qwen 模型權重。
+
+安全排除
+--------
+以下內容不會放入 ZIP：
+- .env、API.txt、模型API.txt（可能包含金鑰）
+- node_modules、Rust target、dist 與 build（可重新產生）
+- Python、pytest、Ruff、模型下載快取
+- _transfer 目錄本身
+
+新電腦操作
+----------
+1. 把 ZIP、SHA256 校驗檔及本說明一起複製到新電腦。
+2. 用 PowerShell 執行：
+   Get-FileHash -Algorithm SHA256 .\Linlin-Agent-Portable-20260809.zip
+   並確認結果與 .sha256 檔相同。
+3. 解壓縮 ZIP 到一般使用者可寫入的目錄，例如 D:\Linlin-Agent。
+4. 安裝 Python 3.12（或 Miniconda）、Node.js LTS，以及 Edge 或 Chrome。
+5. 雙擊 Linlin-Agent.bat，選擇「Install, then run」。
+6. 在 UI 重新輸入雲端供應商 API 金鑰；金鑰不會跨電腦複製。
+7. 如需本機 LoRA 訓練，在啟動選單選擇安裝訓練支援。
+
+Codex 工作接續
+--------------
+1. 開啟 Codex-Task-Export\CODEX_TASK_HANDOFF.md 查看目前 phase、功能與 blocker。
+2. 如需完整對話，開啟 Codex-Task-Export\CODEX_TASK_TRANSCRIPT.md。
+3. 在新電腦建立 Codex 工作後，貼上 Codex-Task-Export\CONTINUE_IN_CODEX.txt。
+4. 已核准的 UI 設計原型位於 Codex-Task-Export\ui-prototype\。
+
+注意
+----
+- models\Qwen2.5-0.5B-Instruct 已包含在封裝中，不必重新下載該模型。
+- OS 金鑰庫通常綁定原電腦，因此必須在新電腦重新輸入憑證。
+- 這是開發工作區轉移包，不是核准發行的商用 RC；P24 決策仍為 NO-GO。
+- C:\Linlin-Agent\Linlin-Agent 巢狀副本在原電腦上未被清理、覆蓋或刪除。

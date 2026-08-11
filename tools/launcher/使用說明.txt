@@ -1,0 +1,58 @@
+﻿Linlin Agent 使用說明
+=====================
+
+一、平常要執行專案
+------------------
+請直接點兩下：
+
+    F:\Linlin-Agent\Linlin-Agent.bat
+
+啟動器會自動完成以下事情：
+
+1. 固定使用 C:\Users\Zhao\Anaconda3\envs\Linlin_agent 環境。
+2. 自動確認環境內的 Python、Node.js 與 npm。
+3. 必要時自動補裝後端與前端套件。
+4. 準備 Linlin Agent 的網頁畫面。
+5. 啟動後端與前端服務。
+6. 自動開啟操作畫面。
+
+使用完畢後，回到黑色啟動視窗按 Enter，專案就會安全停止。
+
+
+二、要開啟專案終端機
+--------------------
+請直接點兩下：
+
+    F:\Linlin-agent-Terminal.bat
+
+開啟後會固定從下列位置開始：
+
+    (Linlin_agent) PS F:\>
+
+提示字元顯示 Linlin_agent 是為了符合您的操作習慣；真正使用的環境路徑是：
+
+    C:\Users\Zhao\Anaconda3\envs\Linlin_agent
+
+
+三、畫面關閉後服務仍在執行
+--------------------------
+如果曾直接關閉黑色啟動視窗，請點兩下：
+
+    F:\Linlin-Agent\tools\launcher\Linlin-Agent-Stop.bat
+
+它只會停止由本啟動器記錄的 Linlin Agent 前端與後端，不會任意停止其他程式。
+
+
+四、資料放在哪裡
+----------------
+正式專案：
+
+    F:\Linlin-Agent
+
+啟動記錄與執行資料：
+
+    F:\Linlin-Agent\tools\launcher\runtime
+
+啟動器集中放在正式專案的 tools\launcher 資料夾；執行資料只寫入其 runtime，
+不會為了啟動便利而修改 backend、frontend 或 desktop 的核心程式碼。
+

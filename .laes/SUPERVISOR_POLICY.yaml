@@ -1,0 +1,1297 @@
+version: 1
+phases:
+  P0:
+    allowed_paths:
+      - scripts/laes_supervisor.py
+      - tests/test_laes_supervisor.py
+      - .laes/SUPERVISOR_POLICY.yaml
+      - .laes/REVIEW_STATE.yaml
+      - .laes/SUPERVISOR_BASELINE.json
+      - .laes/SUPERVISOR_RESULTS.json
+      - docs/governance/phase-artifacts/P0/P0_SUPERVISOR_REVIEW_PACKAGE.md
+      - docs/governance/phase-artifacts/P0/LAES_SUPERVISOR_REVIEW_PACKAGE.md
+      - AGENTS.md
+      - AI_COLLABORATION_CHARTER.md
+      - CODEX.md
+      - CLAUDE.md
+      - GEMINI.md
+      - README_LAES_RULES.md
+      - MANIFEST.sha256
+      - .github
+      - .laes
+      - docs
+    protected_paths:
+      - docs/architecture
+      - backend
+      - frontend
+    validations:
+      - name: supervisor tests
+        cwd: .
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests/test_laes_supervisor.py", "-q"]
+      - name: backend compile
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "compileall", "app", "tests"]
+      - name: backend ruff
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "ruff", "check", "app", "tests"]
+      - name: backend pytest
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests", "-q"]
+      - name: frontend build
+        cwd: frontend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\Scripts\\conda.exe", "run", "--no-capture-output", "-n", "Linlin_agent", "npm", "run", "build"]
+      - name: frontend lint
+        cwd: frontend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\Scripts\\conda.exe", "run", "--no-capture-output", "-n", "Linlin_agent", "npm", "run", "lint"]
+  P1:
+    allowed_paths:
+      - backend/app/providers
+      - backend/tests/test_provider_runtime.py
+      - .laes/SUPERVISOR_POLICY.yaml
+      - docs/governance/phase-artifacts/P1/P1_SUPERVISOR_REVIEW_PACKAGE.md
+    protected_paths:
+      - docs/architecture
+      - backend/app/agents
+      - backend/app/tools
+      - backend/app/workspace
+      - frontend
+    validations:
+      - name: supervisor tests
+        cwd: .
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests/test_laes_supervisor.py", "-q", "--basetemp", "tests/__pycache__/pytest", "-p", "no:cacheprovider"]
+      - name: backend compile
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "compileall", "app", "tests"]
+      - name: backend ruff
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "ruff", "check", "app", "tests"]
+      - name: backend pytest
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests", "-q", "--basetemp", "tests/__pycache__/pytest", "-p", "no:cacheprovider"]
+  P2:
+    allowed_paths:
+      - backend/app/providers/adapters/base.py
+      - backend/app/providers/adapters/ollama.py
+      - backend/app/providers/tool_parser.py
+      - backend/app/agents/tool_loop.py
+      - backend/tests/test_tool_parser.py
+      - backend/tests/test_tool_loop.py
+      - backend/tests/test_provider_runtime.py
+      - .laes/SUPERVISOR_POLICY.yaml
+      - docs/governance/phase-artifacts/P2/P2_SUPERVISOR_REVIEW_PACKAGE.md
+    protected_paths:
+      - docs/architecture
+      - backend/app/workspace
+      - frontend
+    validations:
+      - name: supervisor tests
+        cwd: .
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests/test_laes_supervisor.py", "-q", "--basetemp", "tests/__pycache__/pytest", "-p", "no:cacheprovider"]
+      - name: backend compile
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "compileall", "app", "tests"]
+      - name: backend ruff
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "ruff", "check", "app", "tests"]
+      - name: backend pytest
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests", "-q", "--basetemp", "tests/__pycache__/pytest", "-p", "no:cacheprovider"]
+  P3:
+    allowed_paths:
+      - backend/app/tools/manager.py
+      - backend/app/tools/registry.py
+      - backend/app/agents/tool_loop.py
+      - backend/tests/test_tools.py
+      - backend/tests/test_tool_loop.py
+      - .laes/SUPERVISOR_POLICY.yaml
+      - docs/governance/phase-artifacts/P3/P3_SUPERVISOR_REVIEW_PACKAGE.md
+    protected_paths:
+      - docs/architecture
+      - backend/app/providers
+      - backend/app/workspace
+      - frontend
+    validations:
+      - name: supervisor tests
+        cwd: .
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests/test_laes_supervisor.py", "-q", "--basetemp", "tests/__pycache__/pytest", "-p", "no:cacheprovider"]
+      - name: backend compile
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "compileall", "app", "tests"]
+      - name: backend ruff
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "ruff", "check", "app", "tests"]
+      - name: backend pytest
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests", "-q", "--basetemp", "tests/__pycache__/pytest", "-p", "no:cacheprovider"]
+  P4:
+    allowed_paths:
+      - backend/app/workspace
+      - backend/app/tools/workspace
+      - backend/tests/test_workspace_security.py
+      - .laes/SUPERVISOR_POLICY.yaml
+      - docs/governance/phase-artifacts/P4/P4_SUPERVISOR_REVIEW_PACKAGE.md
+    protected_paths:
+      - docs/architecture
+      - backend/app/providers
+      - frontend
+    validations:
+      - name: supervisor tests
+        cwd: .
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests/test_laes_supervisor.py", "-q", "--basetemp", "tests/__pycache__/pytest", "-p", "no:cacheprovider"]
+      - name: backend compile
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "compileall", "app", "tests"]
+      - name: backend ruff
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "ruff", "check", "app", "tests"]
+      - name: backend pytest
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests", "-q", "--basetemp", "tests/__pycache__/pytest", "-p", "no:cacheprovider"]
+  P5:
+    allowed_paths:
+      - backend/app/security
+      - backend/app/providers/service.py
+      - backend/tests/test_credential_store.py
+      - backend/tests/test_providers.py
+      - .laes/SUPERVISOR_POLICY.yaml
+      - docs/governance/phase-artifacts/P5/P5_SUPERVISOR_REVIEW_PACKAGE.md
+    protected_paths:
+      - docs/architecture
+      - frontend
+    validations:
+      - name: supervisor tests
+        cwd: .
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests/test_laes_supervisor.py", "-q", "--basetemp", "tests/__pycache__/pytest", "-p", "no:cacheprovider"]
+      - name: backend compile
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "compileall", "app", "tests"]
+      - name: backend ruff
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "ruff", "check", "app", "tests"]
+      - name: backend pytest
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests", "-q", "--basetemp", "tests/__pycache__/pytest", "-p", "no:cacheprovider"]
+  P6:
+    allowed_paths:
+      - backend/app/providers
+      - backend/tests/test_provider_runtime.py
+      - backend/tests/test_providers.py
+      - backend/tests/test_provider_cost.py
+      - .laes/SUPERVISOR_POLICY.yaml
+      - docs/governance/phase-artifacts/P6/P6_SUPERVISOR_REVIEW_PACKAGE.md
+    protected_paths:
+      - docs/architecture
+      - frontend
+    validations:
+      - name: supervisor tests
+        cwd: .
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests/test_laes_supervisor.py", "-q", "--basetemp", "tests/__pycache__/pytest", "-p", "no:cacheprovider"]
+      - name: backend compile
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "compileall", "app", "tests"]
+      - name: backend ruff
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "ruff", "check", "app", "tests"]
+      - name: backend pytest
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests", "-q", "--basetemp", "tests/__pycache__/pytest", "-p", "no:cacheprovider"]
+  P7:
+    allowed_paths:
+      - environment.yml
+      - environment-lock.yml
+      - backend/pyproject.toml
+      - docs/development/PORTABILITY.md
+      - .laes/SUPERVISOR_POLICY.yaml
+      - docs/governance/phase-artifacts/P7/P7_SUPERVISOR_REVIEW_PACKAGE.md
+    protected_paths:
+      - docs/architecture
+      - backend/app
+      - frontend/src
+    validations:
+      - name: supervisor tests
+        cwd: .
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests/test_laes_supervisor.py", "-q", "--basetemp", "tests/__pycache__/pytest", "-p", "no:cacheprovider"]
+      - name: backend compile
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "compileall", "app", "tests"]
+      - name: backend ruff
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "ruff", "check", "app", "tests"]
+      - name: backend pytest
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests", "-q", "--basetemp", "tests/__pycache__/pytest", "-p", "no:cacheprovider"]
+      - name: frontend clean install
+        cwd: frontend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\Scripts\\conda.exe", "run", "--no-capture-output", "-n", "Linlin_agent", "npm", "ci"]
+      - name: frontend build
+        cwd: frontend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\Scripts\\conda.exe", "run", "--no-capture-output", "-n", "Linlin_agent", "npm", "run", "build"]
+      - name: frontend lint
+        cwd: frontend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\Scripts\\conda.exe", "run", "--no-capture-output", "-n", "Linlin_agent", "npm", "run", "lint"]
+  P8:
+    allowed_paths:
+      - frontend/src/api.ts
+      - frontend/vite.config.ts
+      - desktop/package.json
+      - desktop/src-tauri/tauri.conf.json
+      - docs/development/CLIENT_ARCHITECTURE.md
+      - .laes/SUPERVISOR_POLICY.yaml
+      - docs/governance/phase-artifacts/P8/P8_SUPERVISOR_REVIEW_PACKAGE.md
+    protected_paths:
+      - docs/architecture
+      - backend/app/providers
+      - backend/app/tools
+      - backend/app/workspace
+    validations:
+      - name: supervisor tests
+        cwd: .
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests/test_laes_supervisor.py", "-q", "--basetemp", "tests/__pycache__/pytest", "-p", "no:cacheprovider"]
+      - name: backend pytest
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests", "-q", "--basetemp", "tests/__pycache__/pytest", "-p", "no:cacheprovider"]
+      - name: frontend build
+        cwd: frontend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\Scripts\\conda.exe", "run", "--no-capture-output", "-n", "Linlin_agent", "npm", "run", "build"]
+      - name: frontend lint
+        cwd: frontend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\Scripts\\conda.exe", "run", "--no-capture-output", "-n", "Linlin_agent", "npm", "run", "lint"]
+      - name: desktop delegated build
+        cwd: desktop
+        command: ["C:\\Users\\Zhao\\Anaconda3\\Scripts\\conda.exe", "run", "--no-capture-output", "-n", "Linlin_agent", "npm", "run", "build"]
+      - name: tauri cargo check
+        cwd: desktop/src-tauri
+        command: ["C:\\Users\\Zhao\\Anaconda3\\Scripts\\conda.exe", "run", "-n", "Linlin_agent", "cargo", "check"]
+  P9:
+    allowed_paths:
+      - scripts/laes_supervisor.py
+      - tests/test_laes_supervisor.py
+      - .laes/CURRENT_PHASE.yaml
+      - .laes/phases/P9.yaml
+      - docs/development/ADVANCED_RUNTIME_READINESS.md
+      - backend/tests/test_advanced_runtime_readiness.py
+      - .laes/SUPERVISOR_POLICY.yaml
+      - docs/governance/phase-artifacts/P9/P9_SUPERVISOR_REVIEW_PACKAGE.md
+    protected_paths:
+      - docs/architecture
+      - backend/app
+      - frontend
+      - desktop
+    validations:
+      - name: supervisor tests
+        cwd: .
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests/test_laes_supervisor.py", "-q", "--basetemp", "tests/__pycache__/pytest", "-p", "no:cacheprovider"]
+      - name: backend compile
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "compileall", "app", "tests"]
+      - name: backend ruff
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "ruff", "check", "app", "tests"]
+      - name: backend pytest
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests", "-q", "--basetemp", "tests/__pycache__/pytest", "-p", "no:cacheprovider"]
+  P10:
+    allowed_paths:
+      - backend/app/memory
+      - backend/app/agents/memory.py
+      - backend/app/core/config.py
+      - backend/tests/test_memory_runtime.py
+      - .laes/SUPERVISOR_POLICY.yaml
+      - docs/governance/phase-artifacts/P10/P10_COMPLETION_REPORT.md
+      - docs/governance/phase-artifacts/P10/P10_SUPERVISOR_REVIEW_PACKAGE.md
+    protected_paths:
+      - docs/architecture
+      - backend/app/providers
+      - backend/app/tools
+      - backend/app/workspace
+      - frontend
+      - desktop
+    validations:
+      - name: supervisor tests
+        cwd: .
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests/test_laes_supervisor.py", "-q", "--basetemp", "tests/__pycache__/pytest", "-p", "no:cacheprovider"]
+      - name: backend compile
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "compileall", "app", "tests"]
+      - name: backend ruff
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "ruff", "check", "app", "tests"]
+      - name: memory isolation and privacy tests
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests/test_memory_runtime.py", "-q", "--basetemp", "tests/__pycache__/pytest-memory", "-p", "no:cacheprovider"]
+      - name: backend pytest
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests", "-q", "--basetemp", "tests/__pycache__/pytest", "-p", "no:cacheprovider"]
+  P11:
+    allowed_paths:
+      - backend/app/rag
+      - backend/app/agents/rag.py
+      - backend/app/core/config.py
+      - backend/tests/test_rag_runtime.py
+      - .laes/SUPERVISOR_POLICY.yaml
+      - docs/governance/phase-artifacts/P11/P11_COMPLETION_REPORT.md
+      - docs/governance/phase-artifacts/P11/P11_SUPERVISOR_REVIEW_PACKAGE.md
+    protected_paths:
+      - docs/architecture
+      - backend/app/tools
+      - backend/app/workspace
+      - frontend
+      - desktop
+    validations:
+      - name: supervisor tests
+        cwd: .
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests/test_laes_supervisor.py", "-q", "--basetemp", "tests/__pycache__/pytest", "-p", "no:cacheprovider"]
+      - name: backend compile
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "compileall", "app", "tests"]
+      - name: backend ruff
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "ruff", "check", "app", "tests"]
+      - name: rag security and citation tests
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests/test_rag_runtime.py", "-q", "--basetemp", "tests/__pycache__/pytest-rag", "-p", "no:cacheprovider"]
+      - name: backend pytest
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests", "-q", "--basetemp", "tests/__pycache__/pytest", "-p", "no:cacheprovider"]
+  P12:
+    allowed_paths:
+      - backend/app/mcp
+      - backend/tests/test_mcp_runtime.py
+      - .laes/SUPERVISOR_POLICY.yaml
+      - docs/governance/phase-artifacts/P12/P12_COMPLETION_REPORT.md
+      - docs/governance/phase-artifacts/P12/P12_SUPERVISOR_REVIEW_PACKAGE.md
+    protected_paths:
+      - docs/architecture
+      - backend/app/providers
+      - backend/app/workspace
+      - backend/app/security
+      - frontend
+      - desktop
+    validations:
+      - name: supervisor tests
+        cwd: .
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests/test_laes_supervisor.py", "-q", "--basetemp", "tests/__pycache__/pytest", "-p", "no:cacheprovider"]
+      - name: backend compile
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "compileall", "app", "tests"]
+      - name: backend ruff
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "ruff", "check", "app", "tests"]
+      - name: mcp permission and malicious-server tests
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests/test_mcp_runtime.py", "-q", "--basetemp", "tests/__pycache__/pytest-mcp", "-p", "no:cacheprovider"]
+      - name: backend pytest
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests", "-q", "--basetemp", "tests/__pycache__/pytest", "-p", "no:cacheprovider"]
+  P13:
+    allowed_paths:
+      - backend/app/plugins
+      - backend/tests/test_plugin_runtime.py
+      - .laes/SUPERVISOR_POLICY.yaml
+      - docs/governance/phase-artifacts/P13/P13_COMPLETION_REPORT.md
+      - docs/governance/phase-artifacts/P13/P13_SUPERVISOR_REVIEW_PACKAGE.md
+    protected_paths:
+      - docs/architecture
+      - backend/app/tools
+      - backend/app/workspace
+      - backend/app/security
+      - frontend
+      - desktop
+    validations:
+      - name: supervisor tests
+        cwd: .
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests/test_laes_supervisor.py", "-q", "--basetemp", "tests/__pycache__/pytest", "-p", "no:cacheprovider"]
+      - name: backend compile
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "compileall", "app", "tests"]
+      - name: backend ruff
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "ruff", "check", "app", "tests"]
+      - name: plugin manifest and lifecycle tests
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests/test_plugin_runtime.py", "-q", "--basetemp", "tests/__pycache__/pytest-plugin", "-p", "no:cacheprovider"]
+      - name: backend pytest
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests", "-q", "--basetemp", "tests/__pycache__/pytest", "-p", "no:cacheprovider"]
+  P14:
+    allowed_paths:
+      - backend/app/scheduler
+      - backend/app/core/config.py
+      - backend/tests/test_scheduler_runtime.py
+      - .laes/SUPERVISOR_POLICY.yaml
+      - docs/governance/phase-artifacts/P14/P14_COMPLETION_REPORT.md
+      - docs/governance/phase-artifacts/P14/P14_SUPERVISOR_REVIEW_PACKAGE.md
+    protected_paths:
+      - docs/architecture
+      - backend/app/providers
+      - backend/app/tools
+      - backend/app/workspace
+      - backend/app/security
+      - frontend
+      - desktop
+    validations:
+      - name: supervisor tests
+        cwd: .
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests/test_laes_supervisor.py", "-q", "--basetemp", "tests/__pycache__/pytest", "-p", "no:cacheprovider"]
+      - name: backend compile
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "compileall", "app", "tests"]
+      - name: backend ruff
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "ruff", "check", "app", "tests"]
+      - name: scheduler authorization and idempotency tests
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests/test_scheduler_runtime.py", "-q", "--basetemp", "tests/__pycache__/pytest-scheduler", "-p", "no:cacheprovider"]
+      - name: backend pytest
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests", "-q", "--basetemp", "tests/__pycache__/pytest", "-p", "no:cacheprovider"]
+  P15:
+    allowed_paths:
+      - backend/app/orchestration
+      - backend/app/core/config.py
+      - backend/tests/test_orchestration_runtime.py
+      - .laes/SUPERVISOR_POLICY.yaml
+      - docs/governance/phase-artifacts/P15/P15_COMPLETION_REPORT.md
+      - docs/governance/phase-artifacts/P15/P15_SUPERVISOR_REVIEW_PACKAGE.md
+    protected_paths:
+      - docs/architecture
+      - backend/app/providers
+      - backend/app/tools
+      - backend/app/workspace
+      - backend/app/security
+      - frontend
+      - desktop
+    validations:
+      - name: supervisor tests
+        cwd: .
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests/test_laes_supervisor.py", "-q", "--basetemp", "tests/__pycache__/pytest", "-p", "no:cacheprovider"]
+      - name: backend compile
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "compileall", "app", "tests"]
+      - name: backend ruff
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "ruff", "check", "app", "tests"]
+      - name: orchestration boundary tests
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests/test_orchestration_runtime.py", "-q", "--basetemp", "tests/__pycache__/pytest-orchestration", "-p", "no:cacheprovider"]
+      - name: backend pytest
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests", "-q", "--basetemp", "tests/__pycache__/pytest", "-p", "no:cacheprovider"]
+  P16:
+    allowed_paths:
+      - backend/app/artifacts
+      - backend/app/core/config.py
+      - backend/tests/test_artifact_runtime.py
+      - .laes/SUPERVISOR_POLICY.yaml
+      - docs/governance/phase-artifacts/P16/P16_COMPLETION_REPORT.md
+      - docs/governance/phase-artifacts/P16/P16_SUPERVISOR_REVIEW_PACKAGE.md
+    protected_paths:
+      - docs/architecture
+      - backend/app/providers
+      - backend/app/tools
+      - backend/app/workspace
+      - backend/app/security
+      - frontend
+      - desktop
+    validations:
+      - name: supervisor tests
+        cwd: .
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests/test_laes_supervisor.py", "-q", "--basetemp", "tests/__pycache__/pytest", "-p", "no:cacheprovider"]
+      - name: backend compile
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "compileall", "app", "tests"]
+      - name: backend ruff
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "ruff", "check", "app", "tests"]
+      - name: artifact boundary tests
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests/test_artifact_runtime.py", "-q", "--basetemp", "tests/__pycache__/pytest-artifacts", "-p", "no:cacheprovider"]
+      - name: backend pytest
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests", "-q", "--basetemp", "tests/__pycache__/pytest", "-p", "no:cacheprovider"]
+  P17:
+    allowed_paths:
+      - backend/app/diagnostics
+      - backend/app/core/config.py
+      - backend/tests/test_diagnostics_runtime.py
+      - docs/development/DIAGNOSTICS.md
+      - .laes/SUPERVISOR_POLICY.yaml
+      - docs/governance/phase-artifacts/P17/P17_COMPLETION_REPORT.md
+      - docs/governance/phase-artifacts/P17/P17_SUPERVISOR_REVIEW_PACKAGE.md
+    protected_paths:
+      - docs/architecture
+      - backend/app/providers
+      - backend/app/tools
+      - backend/app/workspace
+      - backend/app/security
+      - frontend
+      - desktop
+    validations:
+      - name: supervisor tests
+        cwd: .
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests/test_laes_supervisor.py", "-q", "--basetemp", "tests/__pycache__/pytest", "-p", "no:cacheprovider"]
+      - name: backend compile
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "compileall", "app", "tests"]
+      - name: backend ruff
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "ruff", "check", "app", "tests"]
+      - name: diagnostics privacy tests
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests/test_diagnostics_runtime.py", "-q", "--basetemp", "tests/__pycache__/pytest-diagnostics", "-p", "no:cacheprovider"]
+      - name: backend pytest
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests", "-q", "--basetemp", "tests/__pycache__/pytest", "-p", "no:cacheprovider"]
+  P18:
+    allowed_paths:
+      - backend/app/resources
+      - backend/app/core/config.py
+      - backend/tests/test_resource_governor.py
+      - docs/development/PERFORMANCE_BASELINE.md
+      - .laes/SUPERVISOR_POLICY.yaml
+      - docs/governance/phase-artifacts/P18/P18_COMPLETION_REPORT.md
+      - docs/governance/phase-artifacts/P18/P18_SUPERVISOR_REVIEW_PACKAGE.md
+    protected_paths:
+      - docs/architecture
+      - backend/app/providers
+      - backend/app/tools
+      - backend/app/workspace
+      - backend/app/security
+      - frontend
+      - desktop
+    validations:
+      - name: supervisor tests
+        cwd: .
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests/test_laes_supervisor.py", "-q", "--basetemp", "tests/__pycache__/pytest", "-p", "no:cacheprovider"]
+      - name: backend compile
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "compileall", "app", "tests"]
+      - name: backend ruff
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "ruff", "check", "app", "tests"]
+      - name: resource load and cancellation tests
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests/test_resource_governor.py", "-q", "--basetemp", "tests/__pycache__/pytest-resources", "-p", "no:cacheprovider"]
+      - name: backend pytest
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests", "-q", "--basetemp", "tests/__pycache__/pytest", "-p", "no:cacheprovider"]
+  P19:
+    allowed_paths:
+      - backend/app/policy
+      - backend/tests/test_policy_runtime.py
+      - docs/development/POLICY_ENFORCEMENT.md
+      - .laes/SUPERVISOR_POLICY.yaml
+      - docs/governance/phase-artifacts/P19/P19_COMPLETION_REPORT.md
+      - docs/governance/phase-artifacts/P19/P19_SUPERVISOR_REVIEW_PACKAGE.md
+    protected_paths:
+      - docs/architecture
+      - backend/app/providers
+      - backend/app/tools
+      - backend/app/workspace
+      - backend/app/security
+      - backend/app/core
+      - frontend
+      - desktop
+    validations:
+      - name: supervisor tests
+        cwd: .
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests/test_laes_supervisor.py", "-q", "--basetemp", "tests/__pycache__/pytest", "-p", "no:cacheprovider"]
+      - name: backend compile
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "compileall", "app", "tests"]
+      - name: backend ruff
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "ruff", "check", "app", "tests"]
+      - name: policy authorization and isolation tests
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests/test_policy_runtime.py", "-q", "--basetemp", "tests/__pycache__/pytest-policy", "-p", "no:cacheprovider"]
+      - name: backend pytest
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests", "-q", "--basetemp", "tests/__pycache__/pytest", "-p", "no:cacheprovider"]
+  P20:
+    allowed_paths:
+      - Linlin-Agent.bat
+      - scripts/windows_launcher.ps1
+      - scripts/release_integrity.py
+      - tests/test_release_integrity.py
+      - tests/test_windows_launcher.py
+      - backend/pyproject.toml
+      - desktop/src-tauri/tauri.conf.json
+      - docs/development/DESKTOP_RELEASE.md
+      - .laes/SUPERVISOR_POLICY.yaml
+      - docs/governance/phase-artifacts/P20/P20_COMPLETION_REPORT.md
+      - docs/governance/phase-artifacts/P20/P20_SUPERVISOR_REVIEW_PACKAGE.md
+    protected_paths:
+      - docs/architecture
+      - backend/app
+      - frontend/src
+      - desktop/src
+      - desktop/src-tauri/src
+    validations:
+      - name: supervisor tests
+        cwd: .
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests/test_laes_supervisor.py", "-q", "--basetemp", "tests/__pycache__/pytest-supervisor", "-p", "no:cacheprovider"]
+      - name: release signature and tamper tests
+        cwd: .
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests/test_release_integrity.py", "tests/test_windows_launcher.py", "-q", "--basetemp", "tests/__pycache__/pytest-release", "-p", "no:cacheprovider"]
+      - name: release ruff
+        cwd: .
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "ruff", "check", "scripts/release_integrity.py", "tests/test_release_integrity.py"]
+      - name: backend compile
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "compileall", "app", "tests"]
+      - name: backend ruff
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "ruff", "check", "app", "tests"]
+      - name: backend pytest
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests", "-q", "--basetemp", "tests/__pycache__/pytest", "-p", "no:cacheprovider"]
+      - name: frontend build
+        cwd: frontend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\Scripts\\conda.exe", "run", "--no-capture-output", "-n", "Linlin_agent", "npm", "run", "build"]
+      - name: frontend lint
+        cwd: frontend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\Scripts\\conda.exe", "run", "--no-capture-output", "-n", "Linlin_agent", "npm", "run", "lint"]
+      - name: desktop delegated build
+        cwd: desktop
+        command: ["C:\\Users\\Zhao\\Anaconda3\\Scripts\\conda.exe", "run", "--no-capture-output", "-n", "Linlin_agent", "npm", "run", "build"]
+      - name: tauri cargo check
+        cwd: desktop/src-tauri
+        command: ["C:\\Users\\Zhao\\Anaconda3\\Scripts\\conda.exe", "run", "-n", "Linlin_agent", "cargo", "check", "--locked"]
+  P22:
+    allowed_paths:
+      - backend/app/api/contracts.py
+      - backend/app/main.py
+      - backend/app/plugins/__init__.py
+      - backend/app/plugins/models.py
+      - backend/tests/test_api_contracts.py
+      - backend/tests/test_plugin_runtime.py
+      - docs/development/PUBLIC_API_STABILITY.md
+      - .laes/SUPERVISOR_POLICY.yaml
+      - docs/governance/phase-artifacts/P22/P22_COMPLETION_REPORT.md
+      - docs/governance/phase-artifacts/P22/P22_SUPERVISOR_REVIEW_PACKAGE.md
+    protected_paths:
+      - docs/architecture
+      - backend/app/providers
+      - backend/app/tools
+      - backend/app/workspace
+      - backend/app/security
+      - backend/app/memory
+      - backend/app/rag
+      - backend/app/mcp
+      - backend/app/scheduler
+      - backend/app/orchestration
+      - backend/app/training
+      - backend/app/services
+      - frontend
+      - desktop
+      - Linlin-Agent
+      - models
+    validations:
+      - name: api contract compatibility and migration tests
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests/test_api_contracts.py", "tests/test_plugin_runtime.py", "-q", "--basetemp", "tests/__pycache__/pytest-p22-contracts", "-p", "no:cacheprovider"]
+      - name: backend compile
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "compileall", "app", "tests"]
+      - name: backend ruff
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "ruff", "check", "app", "tests"]
+      - name: backend regression
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests", "-q", "--basetemp", "tests/__pycache__/pytest-p22-backend", "-p", "no:cacheprovider"]
+  P23:
+    allowed_paths:
+      - backend/app/bootstrap.py
+      - backend/app/portability
+      - backend/app/main.py
+      - backend/tests/test_portability_runtime.py
+      - docs/development/PORTABILITY_RECOVERY.md
+      - .laes/SUPERVISOR_POLICY.yaml
+      - docs/governance/phase-artifacts/P23/P23_COMPLETION_REPORT.md
+      - docs/governance/phase-artifacts/P23/P23_SUPERVISOR_REVIEW_PACKAGE.md
+    protected_paths:
+      - docs/architecture
+      - backend/app/api
+      - backend/app/providers
+      - backend/app/tools
+      - backend/app/workspace
+      - backend/app/security
+      - backend/app/memory
+      - backend/app/rag
+      - backend/app/mcp
+      - backend/app/scheduler
+      - backend/app/orchestration
+      - backend/app/training
+      - backend/app/services
+      - frontend
+      - desktop
+      - Linlin-Agent
+      - models
+    validations:
+      - name: portability round-trip migration rollback corruption and recovery tests
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests/test_portability_runtime.py", "-q", "--basetemp", "tests/__pycache__/pytest-p23-portability", "-p", "no:cacheprovider"]
+      - name: backend compile
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "compileall", "app", "tests"]
+      - name: backend ruff
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "ruff", "check", "app", "tests"]
+      - name: backend regression
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests", "-q", "--basetemp", "tests/__pycache__/pytest-p23-backend", "-p", "no:cacheprovider"]
+  P24:
+    allowed_paths:
+      - scripts/enterprise_gate.py
+      - scripts/governance_manifest.py
+      - scripts/p24_evidence_recovery.py
+      - scripts/supply_chain.py
+      - tests/test_enterprise_gate.py
+      - MANIFEST.sha256
+      - docs/development/ENTERPRISE_READINESS.md
+      - docs/governance/evidence/P0_P23_APPROVAL_EXCERPTS.md
+      - .laes/reviews
+      - docs/governance/phase-artifacts/P0/P0_COMPLETION_REPORT.md
+      - docs/governance/phase-artifacts/P1/P1_COMPLETION_REPORT.md
+      - docs/governance/phase-artifacts/P2/P2_COMPLETION_REPORT.md
+      - docs/governance/phase-artifacts/P3/P3_COMPLETION_REPORT.md
+      - docs/governance/phase-artifacts/P4/P4_COMPLETION_REPORT.md
+      - docs/governance/phase-artifacts/P5/P5_COMPLETION_REPORT.md
+      - docs/governance/phase-artifacts/P6/P6_COMPLETION_REPORT.md
+      - docs/governance/phase-artifacts/P7/P7_COMPLETION_REPORT.md
+      - docs/governance/phase-artifacts/P8/P8_COMPLETION_REPORT.md
+      - docs/governance/phase-artifacts/P9/P9_COMPLETION_REPORT.md
+      - docs/governance/phase-artifacts/P24/P24_EVIDENCE_INDEX.json
+      - docs/governance/phase-artifacts/P24/P24_RC_DECISION.yaml
+      - .laes/SUPERVISOR_POLICY.yaml
+      - docs/governance/phase-artifacts/P24/P24_COMPLETION_REPORT.md
+      - docs/governance/phase-artifacts/P24/P24_SUPERVISOR_REVIEW_PACKAGE.md
+    protected_paths:
+      - docs/architecture
+      - backend
+      - frontend
+      - desktop
+      - Linlin-Agent
+      - models
+      - .github/workflows
+      - scripts/laes_supervisor.py
+      - scripts/release_integrity.py
+    validations:
+      - name: enterprise gate ruff
+        cwd: .
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "ruff", "check", "scripts/enterprise_gate.py", "scripts/governance_manifest.py", "scripts/p24_evidence_recovery.py", "scripts/supply_chain.py", "tests/test_enterprise_gate.py"]
+      - name: enterprise evidence tests
+        cwd: .
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests/test_enterprise_gate.py", "-q", "--basetemp", "tests/__pycache__/pytest-p24-enterprise", "-p", "no:cacheprovider"]
+      - name: retrospective evidence drift check
+        cwd: .
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "scripts/p24_evidence_recovery.py", "--check"]
+      - name: governance manifest drift check
+        cwd: .
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "scripts/governance_manifest.py", "--check"]
+      - name: enterprise evidence audit
+        cwd: .
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "scripts/enterprise_gate.py", "--output", "tests/__pycache__/p24-enterprise-audit.json", "--require-go"]
+      - name: full governance and supply-chain regression
+        cwd: .
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests", "-q", "--basetemp", "tests/__pycache__/pytest-p24-root", "-p", "no:cacheprovider"]
+      - name: repository secret scan
+        cwd: .
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "scripts/supply_chain.py", "scan"]
+      - name: release integrity and launcher tests
+        cwd: .
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests/test_release_integrity.py", "tests/test_windows_launcher.py", "-q", "--basetemp", "tests/__pycache__/pytest-p24-release", "-p", "no:cacheprovider"]
+      - name: portability recovery tests
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests/test_portability_runtime.py", "-q", "--basetemp", "tests/__pycache__/pytest-p24-recovery", "-p", "no:cacheprovider"]
+      - name: backend compile
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "compileall", "app", "tests"]
+      - name: backend ruff
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "ruff", "check", "app", "tests"]
+      - name: backend regression
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests", "-q", "--basetemp", "tests/__pycache__/pytest-p24-backend", "-p", "no:cacheprovider"]
+      - name: frontend build
+        cwd: frontend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\Scripts\\conda.exe", "run", "--no-capture-output", "-n", "Linlin_agent", "npm", "run", "build"]
+      - name: frontend lint
+        cwd: frontend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\Scripts\\conda.exe", "run", "--no-capture-output", "-n", "Linlin_agent", "npm", "run", "lint"]
+      - name: launcher smoke
+        cwd: .
+        command: ["C:\\Windows\\System32\\cmd.exe", "/c", "Linlin-Agent.bat", "smoke"]
+      - name: tauri cargo check
+        cwd: desktop/src-tauri
+        command: ["C:\\Users\\Zhao\\Anaconda3\\Scripts\\conda.exe", "run", "-n", "Linlin_agent", "cargo", "check", "--locked"]
+  P31:
+    allowed_paths:
+      - frontend/src/App.tsx
+      - frontend/src/App.css
+      - frontend/src/api.ts
+      - frontend/src/types.ts
+      - docs/development/CODE_GENERATION.md
+      - docs/development/CHAT_CODE_INTEGRATION.md
+      - .laes/SUPERVISOR_POLICY.yaml
+      - docs/governance/phase-artifacts/P31/P31_COMPLETION_REPORT.md
+      - docs/governance/phase-artifacts/P31/P31_SUPERVISOR_REVIEW_PACKAGE.md
+    protected_paths:
+      - docs/architecture
+      - backend/app
+      - backend/tests
+      - desktop/src
+      - desktop/src-tauri/src
+      - Linlin-Agent
+    validations:
+      - name: code generation regression
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests/test_code_generation_api.py", "-q", "--basetemp", "tests/__pycache__/pytest-p31-code", "-p", "no:cacheprovider"]
+      - name: backend regression
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests", "-q", "--basetemp", "tests/__pycache__/pytest-p31-backend", "-p", "no:cacheprovider"]
+      - name: frontend build
+        cwd: frontend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\Scripts\\conda.exe", "run", "--no-capture-output", "-n", "Linlin_agent", "npm", "run", "build"]
+      - name: frontend lint
+        cwd: frontend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\Scripts\\conda.exe", "run", "--no-capture-output", "-n", "Linlin_agent", "npm", "run", "lint"]
+      - name: tauri cargo check
+        cwd: desktop/src-tauri
+        command: ["C:\\Users\\Zhao\\Anaconda3\\Scripts\\conda.exe", "run", "-n", "Linlin_agent", "cargo", "check", "--locked"]
+  P32:
+    allowed_paths:
+      - backend/app/training
+      - backend/app/api/router.py
+      - backend/app/api/routes/training.py
+      - backend/app/services/cloud_provider_service.py
+      - backend/tests/test_training_api.py
+      - frontend/src/App.tsx
+      - frontend/src/App.css
+      - frontend/src/api.ts
+      - frontend/src/types.ts
+      - docs/development/LLM_TRAINING.md
+      - .laes/SUPERVISOR_POLICY.yaml
+      - docs/governance/phase-artifacts/P32/P32_COMPLETION_REPORT.md
+      - docs/governance/phase-artifacts/P32/P32_SUPERVISOR_REVIEW_PACKAGE.md
+    protected_paths:
+      - docs/architecture
+      - backend/app/tools
+      - backend/app/workspace
+      - backend/app/security/credential_store.py
+      - backend/app/providers/adapters
+      - desktop/src
+      - desktop/src-tauri/src
+      - Linlin-Agent
+    validations:
+      - name: training API and security tests
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests/test_training_api.py", "-q", "--basetemp", "tests/__pycache__/pytest-p32-training", "-p", "no:cacheprovider"]
+      - name: backend ruff
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "ruff", "check", "app", "tests"]
+      - name: backend regression
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests", "-q", "--basetemp", "tests/__pycache__/pytest-p32-backend", "-p", "no:cacheprovider"]
+      - name: frontend build
+        cwd: frontend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\Scripts\\conda.exe", "run", "--no-capture-output", "-n", "Linlin_agent", "npm", "run", "build"]
+      - name: frontend lint
+        cwd: frontend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\Scripts\\conda.exe", "run", "--no-capture-output", "-n", "Linlin_agent", "npm", "run", "lint"]
+      - name: tauri cargo check
+        cwd: desktop/src-tauri
+        command: ["C:\\Users\\Zhao\\Anaconda3\\Scripts\\conda.exe", "run", "-n", "Linlin_agent", "cargo", "check", "--locked"]
+  P33:
+    allowed_paths:
+      - frontend/src/App.tsx
+      - frontend/src/App.css
+      - docs/development/THEMES.md
+      - .laes/SUPERVISOR_POLICY.yaml
+      - docs/governance/phase-artifacts/P33/P33_COMPLETION_REPORT.md
+      - docs/governance/phase-artifacts/P33/P33_SUPERVISOR_REVIEW_PACKAGE.md
+    protected_paths:
+      - docs/architecture
+      - backend/app
+      - backend/tests
+      - frontend/src/api.ts
+      - frontend/src/types.ts
+      - desktop/src
+      - desktop/src-tauri/src
+      - Linlin-Agent
+    validations:
+      - name: backend regression
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests", "-q", "--basetemp", "tests/__pycache__/pytest-p33-backend", "-p", "no:cacheprovider"]
+      - name: frontend build
+        cwd: frontend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\Scripts\\conda.exe", "run", "--no-capture-output", "-n", "Linlin_agent", "npm", "run", "build"]
+      - name: frontend lint
+        cwd: frontend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\Scripts\\conda.exe", "run", "--no-capture-output", "-n", "Linlin_agent", "npm", "run", "lint"]
+      - name: tauri cargo check
+        cwd: desktop/src-tauri
+        command: ["C:\\Users\\Zhao\\Anaconda3\\Scripts\\conda.exe", "run", "-n", "Linlin_agent", "cargo", "check", "--locked"]
+  P34:
+    allowed_paths:
+      - backend/app/training
+      - backend/app/api/routes/training.py
+      - backend/app/core/config.py
+      - backend/pyproject.toml
+      - backend/linlin_agent_backend.egg-info/PKG-INFO
+      - backend/linlin_agent_backend.egg-info/SOURCES.txt
+      - backend/linlin_agent_backend.egg-info/requires.txt
+      - backend/tests/test_training_api.py
+      - frontend/src/App.tsx
+      - frontend/src/App.css
+      - frontend/src/api.ts
+      - frontend/src/types.ts
+      - scripts/windows_launcher.ps1
+      - tests/test_windows_launcher.py
+      - docs/development/LOCAL_LLM_TRAINING.md
+      - .laes/SUPERVISOR_POLICY.yaml
+      - docs/governance/phase-artifacts/P34/P34_COMPLETION_REPORT.md
+      - docs/governance/phase-artifacts/P34/P34_SUPERVISOR_REVIEW_PACKAGE.md
+    protected_paths:
+      - docs/architecture
+      - backend/app/tools
+      - backend/app/workspace
+      - backend/app/security
+      - backend/app/providers
+      - desktop/src
+      - desktop/src-tauri/src
+      - Linlin-Agent
+    validations:
+      - name: training API and local runtime tests
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests/test_training_api.py", "-q", "--basetemp", "tests/__pycache__/pytest-p34-training", "-p", "no:cacheprovider"]
+      - name: backend ruff
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "ruff", "check", "app", "tests"]
+      - name: backend regression
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests", "-q", "--basetemp", "tests/__pycache__/pytest-p34-backend", "-p", "no:cacheprovider"]
+      - name: launcher tests
+        cwd: .
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests/test_windows_launcher.py", "-q", "--basetemp", "tests/__pycache__/pytest-p34-launcher", "-p", "no:cacheprovider"]
+      - name: frontend build
+        cwd: frontend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\Scripts\\conda.exe", "run", "--no-capture-output", "-n", "Linlin_agent", "npm", "run", "build"]
+      - name: frontend lint
+        cwd: frontend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\Scripts\\conda.exe", "run", "--no-capture-output", "-n", "Linlin_agent", "npm", "run", "lint"]
+      - name: tauri cargo check
+        cwd: desktop/src-tauri
+        command: ["C:\\Users\\Zhao\\Anaconda3\\Scripts\\conda.exe", "run", "-n", "Linlin_agent", "cargo", "check", "--locked"]
+  P25:
+    allowed_paths:
+      - frontend/src
+      - backend/app/api/router.py
+      - backend/app/api/routes/models.py
+      - backend/app/api/routes/runtime_control.py
+      - backend/app/schemas/models.py
+      - backend/tests/test_models.py
+      - backend/tests/test_runtime_control_api.py
+      - docs/development/COMMERCIAL_CONTROL_CENTER.md
+      - .laes/SUPERVISOR_POLICY.yaml
+      - docs/governance/phase-artifacts/P25/P25_COMPLETION_REPORT.md
+      - docs/governance/phase-artifacts/P25/P25_SUPERVISOR_REVIEW_PACKAGE.md
+    protected_paths:
+      - backend/app/providers
+      - backend/app/tools
+      - backend/app/workspace
+      - backend/app/security
+      - backend/app/memory
+      - backend/app/rag
+      - backend/app/mcp
+      - backend/app/scheduler
+      - backend/app/orchestration
+      - desktop/src-tauri/src
+      - Linlin-Agent
+    validations:
+      - name: backend compile
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "compileall", "app", "tests"]
+      - name: backend ruff
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "ruff", "check", "app", "tests"]
+      - name: runtime control api tests
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests/test_runtime_control_api.py", "tests/test_models.py", "-q", "--basetemp", "tests/__pycache__/pytest-p25-api", "-p", "no:cacheprovider"]
+      - name: backend regression
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests", "-q", "--basetemp", "tests/__pycache__/pytest-p25-backend", "-p", "no:cacheprovider"]
+      - name: frontend build
+        cwd: frontend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\Scripts\\conda.exe", "run", "--no-capture-output", "-n", "Linlin_agent", "npm", "run", "build"]
+      - name: frontend lint
+        cwd: frontend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\Scripts\\conda.exe", "run", "--no-capture-output", "-n", "Linlin_agent", "npm", "run", "lint"]
+      - name: tauri cargo check
+        cwd: desktop/src-tauri
+        command: ["C:\\Users\\Zhao\\Anaconda3\\Scripts\\conda.exe", "run", "-n", "Linlin_agent", "cargo", "check", "--locked"]
+      - name: tauri release smoke
+        cwd: desktop/src-tauri
+        command: ["C:\\Users\\Zhao\\Anaconda3\\Scripts\\conda.exe", "run", "-n", "Linlin_agent", "cargo", "build", "--release", "--locked"]
+  P26:
+    allowed_paths:
+      - frontend/src
+      - backend/app/api/router.py
+      - backend/app/api/routes/advanced_runtime.py
+      - backend/app/api/routes/runtime_control.py
+      - backend/app/services/advanced_runtime.py
+      - backend/app/main.py
+      - backend/tests/test_advanced_runtime_api.py
+      - backend/tests/test_runtime_control_api.py
+      - docs/development/ADVANCED_RUNTIME_UI.md
+      - .laes/SUPERVISOR_POLICY.yaml
+      - docs/governance/phase-artifacts/P26/P26_COMPLETION_REPORT.md
+      - docs/governance/phase-artifacts/P26/P26_SUPERVISOR_REVIEW_PACKAGE.md
+    protected_paths:
+      - backend/app/providers
+      - backend/app/tools
+      - backend/app/workspace
+      - backend/app/security
+      - backend/app/rag
+      - backend/app/mcp
+      - backend/app/scheduler
+      - backend/app/orchestration
+      - desktop/src-tauri/src
+      - Linlin-Agent
+    validations:
+      - name: backend compile
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "compileall", "app", "tests"]
+      - name: backend ruff
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "ruff", "check", "app", "tests"]
+      - name: advanced runtime api tests
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests/test_advanced_runtime_api.py", "tests/test_runtime_control_api.py", "-q", "--basetemp", "tests/__pycache__/pytest-p26", "-p", "no:cacheprovider"]
+      - name: backend regression
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests", "-q", "--basetemp", "tests/__pycache__/pytest-p26-backend", "-p", "no:cacheprovider"]
+      - name: frontend build
+        cwd: frontend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\Scripts\\conda.exe", "run", "--no-capture-output", "-n", "Linlin_agent", "npm", "run", "build"]
+      - name: frontend lint
+        cwd: frontend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\Scripts\\conda.exe", "run", "--no-capture-output", "-n", "Linlin_agent", "npm", "run", "lint"]
+      - name: tauri cargo check
+        cwd: desktop/src-tauri
+        command: ["C:\\Users\\Zhao\\Anaconda3\\Scripts\\conda.exe", "run", "-n", "Linlin_agent", "cargo", "check", "--locked"]
+  P27:
+    allowed_paths:
+      - frontend/src
+      - backend/app/api
+      - backend/app/providers
+      - backend/app/security
+      - backend/app/schemas
+      - backend/app/services/cloud_provider_service.py
+      - backend/app/main.py
+      - backend/tests/test_cloud_provider_api.py
+      - backend/tests/test_models.py
+      - docs/development/CLOUD_PROVIDERS.md
+      - .laes/SUPERVISOR_POLICY.yaml
+      - docs/governance/phase-artifacts/P27/P27_COMPLETION_REPORT.md
+      - docs/governance/phase-artifacts/P27/P27_SUPERVISOR_REVIEW_PACKAGE.md
+    protected_paths:
+      - backend/app/tools
+      - backend/app/workspace
+      - backend/app/rag
+      - backend/app/mcp
+      - backend/app/scheduler
+      - backend/app/orchestration
+      - desktop/src-tauri/src
+      - Linlin-Agent
+    validations:
+      - name: backend compile
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "compileall", "app", "tests"]
+      - name: backend ruff
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "ruff", "check", "app", "tests"]
+      - name: cloud provider tests
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests/test_cloud_provider_api.py", "-q", "--basetemp", "tests/__pycache__/pytest-p27", "-p", "no:cacheprovider"]
+      - name: backend regression
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests", "-q", "--basetemp", "tests/__pycache__/pytest-p27-backend", "-p", "no:cacheprovider"]
+      - name: frontend build
+        cwd: frontend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\Scripts\\conda.exe", "run", "--no-capture-output", "-n", "Linlin_agent", "npm", "run", "build"]
+      - name: frontend lint
+        cwd: frontend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\Scripts\\conda.exe", "run", "--no-capture-output", "-n", "Linlin_agent", "npm", "run", "lint"]
+      - name: tauri cargo check
+        cwd: desktop/src-tauri
+        command: ["C:\\Users\\Zhao\\Anaconda3\\Scripts\\conda.exe", "run", "-n", "Linlin_agent", "cargo", "check", "--locked"]
+  P28:
+    allowed_paths:
+      - frontend/src
+      - backend/app/api
+      - backend/app/services/code_generation_service.py
+      - backend/tests/test_code_generation_api.py
+      - docs/development/CODE_GENERATION.md
+      - .laes/SUPERVISOR_POLICY.yaml
+      - docs/governance/phase-artifacts/P28/P28_COMPLETION_REPORT.md
+      - docs/governance/phase-artifacts/P28/P28_SUPERVISOR_REVIEW_PACKAGE.md
+    protected_paths:
+      - backend/app/providers
+      - backend/app/tools
+      - backend/app/workspace
+      - backend/app/security
+      - backend/app/rag
+      - backend/app/mcp
+      - backend/app/scheduler
+      - backend/app/orchestration
+      - desktop/src-tauri/src
+      - Linlin-Agent
+    validations:
+      - name: backend compile
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "compileall", "app", "tests"]
+      - name: backend ruff
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "ruff", "check", "app", "tests"]
+      - name: code generation tests
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests/test_code_generation_api.py", "-q", "--basetemp", "tests/__pycache__/pytest-p28", "-p", "no:cacheprovider"]
+      - name: backend regression
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests", "-q", "--basetemp", "tests/__pycache__/pytest-p28-backend", "-p", "no:cacheprovider"]
+      - name: frontend build
+        cwd: frontend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\Scripts\\conda.exe", "run", "--no-capture-output", "-n", "Linlin_agent", "npm", "run", "build"]
+      - name: frontend lint
+        cwd: frontend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\Scripts\\conda.exe", "run", "--no-capture-output", "-n", "Linlin_agent", "npm", "run", "lint"]
+      - name: tauri cargo check
+        cwd: desktop/src-tauri
+        command: ["C:\\Users\\Zhao\\Anaconda3\\Scripts\\conda.exe", "run", "-n", "Linlin_agent", "cargo", "check", "--locked"]
+  P29:
+    allowed_paths:
+      - Linlin-Agent.bat
+      - scripts/windows_launcher.ps1
+      - tests/test_windows_launcher.py
+      - docs/development/DESKTOP_RELEASE.md
+      - .laes/SUPERVISOR_POLICY.yaml
+      - docs/governance/phase-artifacts/P29/P29_COMPLETION_REPORT.md
+      - docs/governance/phase-artifacts/P29/P29_SUPERVISOR_REVIEW_PACKAGE.md
+    protected_paths:
+      - backend/app
+      - frontend/src
+      - desktop/src
+      - desktop/src-tauri/src
+      - Linlin-Agent
+    validations:
+      - name: launcher tests
+        cwd: .
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests/test_windows_launcher.py", "-q", "--basetemp", "tests/__pycache__/pytest-p29-launcher", "-p", "no:cacheprovider"]
+      - name: launcher smoke
+        cwd: .
+        command: ["C:\\Windows\\System32\\cmd.exe", "/c", "Linlin-Agent.bat", "smoke"]
+      - name: backend regression
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests", "-q", "--basetemp", "tests/__pycache__/pytest-p29-backend", "-p", "no:cacheprovider"]
+      - name: frontend build
+        cwd: frontend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\Scripts\\conda.exe", "run", "--no-capture-output", "-n", "Linlin_agent", "npm", "run", "build"]
+      - name: frontend lint
+        cwd: frontend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\Scripts\\conda.exe", "run", "--no-capture-output", "-n", "Linlin_agent", "npm", "run", "lint"]
+  P30:
+    allowed_paths:
+      - backend/app/services/code_generation_service.py
+      - backend/tests/test_code_generation_api.py
+      - docs/development/CODE_GENERATION.md
+      - .laes/SUPERVISOR_POLICY.yaml
+      - docs/governance/phase-artifacts/P30/P30_COMPLETION_REPORT.md
+      - docs/governance/phase-artifacts/P30/P30_SUPERVISOR_REVIEW_PACKAGE.md
+    protected_paths:
+      - backend/app/providers
+      - backend/app/tools
+      - backend/app/workspace
+      - backend/app/security
+      - frontend/src
+      - desktop/src
+      - desktop/src-tauri/src
+      - Linlin-Agent
+    validations:
+      - name: code normalization tests
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests/test_code_generation_api.py", "-q", "--basetemp", "tests/__pycache__/pytest-p30", "-p", "no:cacheprovider"]
+      - name: backend ruff
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "ruff", "check", "app", "tests"]
+      - name: backend regression
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests", "-q", "--basetemp", "tests/__pycache__/pytest-p30-backend", "-p", "no:cacheprovider"]
+      - name: frontend build
+        cwd: frontend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\Scripts\\conda.exe", "run", "--no-capture-output", "-n", "Linlin_agent", "npm", "run", "build"]
+      - name: frontend lint
+        cwd: frontend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\Scripts\\conda.exe", "run", "--no-capture-output", "-n", "Linlin_agent", "npm", "run", "lint"]
+  P21:
+    allowed_paths:
+      - .github/workflows/ci.yml
+      - .github/workflows/release.yml
+      - .gitignore
+      - scripts/supply_chain.py
+      - tests/test_supply_chain.py
+      - tests/test_ci_workflows.py
+      - docs/development/SUPPLY_CHAIN_SECURITY.md
+      - .laes/SUPERVISOR_POLICY.yaml
+      - docs/governance/phase-artifacts/P21/P21_COMPLETION_REPORT.md
+      - docs/governance/phase-artifacts/P21/P21_SUPERVISOR_REVIEW_PACKAGE.md
+    protected_paths:
+      - docs/architecture
+      - backend/app
+      - frontend/src
+      - desktop/src
+      - desktop/src-tauri/src
+    validations:
+      - name: supervisor tests
+        cwd: .
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests/test_laes_supervisor.py", "-q", "--basetemp", "tests/__pycache__/pytest-supervisor", "-p", "no:cacheprovider"]
+      - name: supply chain ruff
+        cwd: .
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "ruff", "check", "scripts/supply_chain.py", "tests/test_supply_chain.py", "tests/test_ci_workflows.py"]
+      - name: workflow sbom provenance and compromise tests
+        cwd: .
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests/test_supply_chain.py", "tests/test_ci_workflows.py", "-q", "--basetemp", "tests/__pycache__/pytest-p21-repeatable", "-p", "no:cacheprovider"]
+      - name: secret scan
+        cwd: .
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "scripts/supply_chain.py", "scan"]
+      - name: deterministic sbom and audit requirements
+        cwd: .
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "scripts/supply_chain.py", "sbom", "--output", "tests/__pycache__/p21-sbom.cdx.json"]
+      - name: pinned backend requirements
+        cwd: .
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "scripts/supply_chain.py", "requirements", "--output", "tests/__pycache__/p21-backend-requirements.txt"]
+      - name: python dependency audit
+        cwd: .
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pip_audit", "--requirement", "tests/__pycache__/p21-backend-requirements.txt", "--strict", "--cache-dir", "tests/__pycache__/pip-audit-cache"]
+      - name: backend compile
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "compileall", "app", "tests"]
+      - name: backend ruff
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "ruff", "check", "app", "tests"]
+      - name: backend pytest
+        cwd: backend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\envs\\Linlin_agent\\python.exe", "-m", "pytest", "tests", "-q", "--basetemp", "tests/__pycache__/pytest-p21-backend-repeatable", "-p", "no:cacheprovider"]
+      - name: frontend dependency audit
+        cwd: frontend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\Scripts\\conda.exe", "run", "--no-capture-output", "-n", "Linlin_agent", "npm", "audit", "--audit-level=high", "--cache", "../tests/__pycache__/npm-audit-cache"]
+      - name: frontend build
+        cwd: frontend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\Scripts\\conda.exe", "run", "--no-capture-output", "-n", "Linlin_agent", "npm", "run", "build"]
+      - name: frontend lint
+        cwd: frontend
+        command: ["C:\\Users\\Zhao\\Anaconda3\\Scripts\\conda.exe", "run", "--no-capture-output", "-n", "Linlin_agent", "npm", "run", "lint"]
+      - name: tauri cargo check
+        cwd: desktop/src-tauri
+        command: ["C:\\Users\\Zhao\\Anaconda3\\Scripts\\conda.exe", "run", "-n", "Linlin_agent", "cargo", "check", "--locked"]

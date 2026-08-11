@@ -49,6 +49,10 @@ class ToolLoop:
 
         options["tools"] = self._tool_manager.definitions()
 
+        provider_instance = self._provider_manager.provider(provider)
+        if not provider_instance.supports_thinking_with_tools:
+            options["think"] = False
+
         for _ in range(self._max_iterations):
             response = await self._provider_manager.chat(
                 provider=provider,

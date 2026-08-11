@@ -98,6 +98,25 @@ def test_tool_manager_rejects_duplicate_registration() -> None:
         manager.register(CalculatorTool())
 
 
+def test_tool_profiles_limit_schema_exposure_without_removing_capability() -> None:
+    manager = ToolManager()
+    core = CalculatorTool()
+    specialized = CalculatorTool()
+    specialized.name = "specialized_calculator"
+
+    manager.register(core)
+    manager.register(specialized, profiles=("specialized",))
+
+    assert [item["function"]["name"] for item in manager.definitions()] == [
+        "calculator",
+    ]
+    assert [
+        item["function"]["name"]
+        for item in manager.definitions("specialized")
+    ] == ["specialized_calculator"]
+    assert manager.get("specialized_calculator") is specialized
+
+
 @pytest.mark.asyncio
 async def test_tool_manager_rejects_unknown_tool() -> None:
     manager = ToolManager()

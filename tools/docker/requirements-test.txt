@@ -1,0 +1,24 @@
+# Linlin Agent Docker 沙盒的核心後端與測試依賴。
+#
+# 版本直接對齊 F:\Linlin-Agent\backend\pyproject.toml，避免 Docker 測試結果因
+# 未固定套件版本而與專案基準不同。大型 LoRA 訓練套件刻意不在基本沙盒安裝，
+# 因為 P24 基準允許需要特定硬體的訓練執行測試維持環境相依 skip。
+cryptography==50.0.0
+fastapi==0.141.1
+httpx==0.28.1
+orjson==3.11.9
+psutil==7.2.2
+pydantic==2.13.4
+pydantic-settings==2.14.2
+sse-starlette==3.4.6
+uvicorn==0.52.1
+
+# 開發與驗證工具。
+pytest==9.1.1
+pytest-asyncio==1.4.0
+pytest-cov==7.1.0
+ruff==0.16.1
+
+# 根目錄治理與供應鏈測試會讀取 YAML，因此在測試映像中明確安裝。
+PyYAML>=6.0,<7.0
+

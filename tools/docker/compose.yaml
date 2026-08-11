@@ -1,0 +1,115 @@
+# Compose 的內部專案名稱必須使用小寫；Docker Desktop 顯示的容器名稱則由
+# container_name 固定為使用者指定的「Linlin-Agent」。
+name: linlin-agent
+
+services:
+  sandbox:
+    build:
+      # 建置內容只包含本資料夾的 Docker 設定，不會把 1 GB 模型複製進映像。
+      context: .
+      dockerfile: Dockerfile
+    image: linlin-agent-sandbox:local
+    container_name: Linlin-Agent
+    hostname: linlin-agent
+    init: true
+    working_dir: /workspace
+
+    # 正式專案掛到 /source 且維持唯讀；啟動程序把程式碼複製到暫存 /workspace。
+    # 這可讓測試正常建立少量暫存檔，同時保證不會寫回 F:\Linlin-Agent。
+    volumes:
+      - type: bind
+        # compose.yaml 整理後位於 F:\Linlin-Agent\tools\docker，因此 ../..
+        # 正好指向唯一的正式專案根目錄 F:\Linlin-Agent。
+        source: ../..
+        target: /source
+        read_only: true
+      - type: bind
+        source: ../../models
+        target: /workspace/models
+        read_only: true
+      - type: bind
+        # 啟動腳本從專案 tools\docker 資料夾唯讀掛載；日後修正沙盒流程時
+        # 不必重建龐大的 Python/Node/Rust 工具鏈映像。
+        source: ./sandbox-start.sh
+        target: /docker-config/sandbox-start.sh
+        read_only: true
+      - type: volume
+        source: frontend-node-modules
+        target: /workspace/frontend/node_modules
+      - type: volume
+        source: frontend-dist
+        target: /workspace/frontend/dist
+      - type: volume
+        source: cargo-target
+        target: /workspace/desktop/src-tauri/target
+      - type: volume
+        source: sandbox-cache
+        target: /sandbox-cache
+      - type: volume
+        source: sandbox-data
+        target: /workspace/data
+      - type: volume
+        source: sandbox-logs
+        target: /workspace/logs
+      - type: volume
+        source: sandbox-outputs
+        target: /workspace/outputs
+      - type: volume
+        source: sandbox-workspace
+        target: /workspace/workspace
+
+    environment:
+      # 禁止 Python 在唯讀原始碼旁產生 __pycache__。
+      PYTHONDONTWRITEBYTECODE: "1"
+      PYTHONPATH: /workspace/backend
+      # 將套件管理器快取與 Rust 下載資料導向容器專用 volume。
+      npm_config_cache: /sandbox-cache/npm
+      CARGO_HOME: /sandbox-cache/cargo
+      # conda-forge 的 pkg-config 只看 conda prefix，會遮蔽 Ubuntu 已安裝的
+      # GTK/ATK/Cairo/WebKit 開發函式庫。Cargo/Tauri 必須使用系統版本。
+      PKG_CONFIG: /usr/bin/pkg-config
+      PKG_CONFIG_PATH: /usr/lib/x86_64-linux-gnu/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig
+
+    # 不對主機開放連接埠；測試需要服務時只在容器內使用 localhost。
+    expose: []
+
+    # 沙盒不取得額外 Linux capabilities，也不能在執行期間提高權限。
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+
+    # /workspace 與 /tmp 都使用記憶體暫存；容器停止後程式碼副本立即清除。
+    # 模型不會複製進記憶體，因為它由上方唯讀 bind mount 直接提供。
+    tmpfs:
+      - /tmp
+      - /workspace:exec,size=512m
+
+    # 容器只待命，除非明確執行 README 中的測試命令。
+    command: ["bash", "/docker-config/sandbox-start.sh"]
+
+networks:
+  default:
+    # internal 網路禁止容器在執行階段直接連到外部網路；映像建置下載仍由
+    # Docker BuildKit 處理。雲端 Provider 測試應使用 mock，不會傳送使用者資料。
+    name: Linlin-Agent-sandbox-network
+    internal: true
+
+volumes:
+  # 這些 volume 只保存可重新產生的依賴、產物、快取與測試資料。
+  frontend-node-modules:
+    name: Linlin-Agent-frontend-node-modules
+  frontend-dist:
+    name: Linlin-Agent-frontend-dist
+  cargo-target:
+    name: Linlin-Agent-cargo-target
+  sandbox-cache:
+    name: Linlin-Agent-cache
+  sandbox-data:
+    name: Linlin-Agent-data
+  sandbox-logs:
+    name: Linlin-Agent-logs
+  sandbox-outputs:
+    name: Linlin-Agent-outputs
+  sandbox-workspace:
+    name: Linlin-Agent-workspace

@@ -1,12 +1,13 @@
 {
   "name": "desktop",
   "private": true,
-  "version": "0.1.0",
+  "version": "1.0.0-rc.1",
+  "packageManager": "pnpm@11.21.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview",
+    "dev": "npm --prefix ../frontend run dev",
+    "build": "npm --prefix ../frontend run build",
+    "preview": "npm --prefix ../frontend run preview",
     "tauri": "tauri"
   },
   "dependencies": {

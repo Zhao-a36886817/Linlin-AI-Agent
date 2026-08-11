@@ -5,7 +5,9 @@ from pydantic import BaseModel
 
 class ModelInfo(BaseModel):
     provider: str
+    provider_label: str | None = None
     name: str
+    local: bool
     family: str | None = None
     parameter_size: str | None = None
     quantization: str | None = None

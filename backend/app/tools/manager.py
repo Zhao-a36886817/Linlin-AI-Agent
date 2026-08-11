@@ -18,12 +18,14 @@ class ToolManager:
 
     def __init__(self) -> None:
         self._tools: dict[str, BaseTool] = {}
+        self._profiles: dict[str, set[str]] = {}
 
     def register(
         self,
         tool: BaseTool,
         *,
         replace: bool = False,
+        profiles: tuple[str, ...] = ("core",),
     ) -> None:
         name = tool.name.strip().lower()
 
@@ -35,11 +37,28 @@ class ToolManager:
                 f"Tool '{name}' is already registered.",
             )
 
+        normalized_profiles: list[str] = []
+        for profile in profiles:
+            normalized_profile = profile.strip().lower()
+            if not normalized_profile:
+                raise ToolRegistrationError("Tool profile cannot be empty.")
+            normalized_profiles.append(normalized_profile)
+
+        if replace:
+            for profile_tools in self._profiles.values():
+                profile_tools.discard(name)
+
         self._tools[name] = tool
+
+        for normalized_profile in normalized_profiles:
+            self._profiles.setdefault(normalized_profile, set()).add(name)
 
     def unregister(self, name: str) -> bool:
         normalized = name.strip().lower()
-        return self._tools.pop(normalized, None) is not None
+        removed = self._tools.pop(normalized, None) is not None
+        for profile_tools in self._profiles.values():
+            profile_tools.discard(normalized)
+        return removed
 
     def get(self, name: str) -> BaseTool:
         normalized = name.strip().lower()
@@ -54,8 +73,12 @@ class ToolManager:
     def names(self) -> list[str]:
         return sorted(self._tools)
 
-    def definitions(self) -> list[dict[str, Any]]:
-        return [self._tools[name].definition() for name in self.names()]
+    def definitions(self, profile: str = "core") -> list[dict[str, Any]]:
+        """Return deterministic schemas explicitly exposed by a profile."""
+
+        normalized_profile = profile.strip().lower()
+        names = sorted(self._profiles.get(normalized_profile, set()))
+        return [self._tools[name].definition() for name in names]
 
     async def execute(
         self,

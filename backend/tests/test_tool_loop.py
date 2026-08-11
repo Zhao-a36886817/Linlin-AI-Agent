@@ -13,6 +13,10 @@ from app.tools.calculator import CalculatorTool
 from app.tools.manager import ToolManager
 
 
+class FakeProvider:
+    supports_thinking_with_tools = False
+
+
 class FakeProviderManager:
     def __init__(
         self,
@@ -20,6 +24,11 @@ class FakeProviderManager:
     ) -> None:
         self.responses = list(responses)
         self.requests: list[dict[str, Any]] = []
+
+    @staticmethod
+    def provider(name: str) -> FakeProvider:
+        del name
+        return FakeProvider()
 
     async def chat(
         self,
@@ -132,6 +141,7 @@ async def test_tool_loop_executes_calculator() -> None:
 
     assert response["content"] == "(25 + 5) ? 8 = 240?"
     assert len(provider_manager.requests) == 2
+    assert provider_manager.requests[0]["kwargs"]["think"] is False
 
     second_messages = provider_manager.requests[1]["messages"]
 
@@ -140,6 +150,26 @@ async def test_tool_loop_executes_calculator() -> None:
     assert second_messages[-1]["name"] == "calculator"
     assert second_messages[-1]["tool_call_id"] == "call-1"
     assert '"result": 240' in second_messages[-1]["content"]
+
+
+@pytest.mark.asyncio
+async def test_tool_loop_disables_unproven_thinking_with_tools() -> None:
+    provider_manager = FakeProviderManager(
+        [{"content": "done", "tool_calls": []}],
+    )
+    loop = ToolLoop(
+        provider_manager=provider_manager,  # type: ignore[arg-type]
+        tool_manager=create_tool_manager(),
+    )
+
+    await loop.run(
+        provider="ollama",
+        model="tool-capable-model",
+        messages=[{"role": "user", "content": "calculate"}],
+        provider_options={"think": True},
+    )
+
+    assert provider_manager.requests[0]["kwargs"]["think"] is False
 
 
 @pytest.mark.asyncio

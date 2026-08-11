@@ -7,7 +7,7 @@ from app.providers.registry import provider_registry
 
 
 class ProviderFactory:
-    """Create provider adapter instances from the registry."""
+    """Canonical construction route from ProviderRegistry to BaseProvider."""
 
     @staticmethod
     def create(

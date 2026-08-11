@@ -8,7 +8,7 @@ from app.providers.factory import ProviderFactory
 
 
 class ProviderManager:
-    """Manage reusable provider instances."""
+    """Canonical runtime entry point for discovering and using providers."""
 
     def __init__(self) -> None:
         self._instances: dict[str, BaseProvider] = {}
@@ -25,6 +25,17 @@ class ProviderManager:
             )
 
         return self._instances[normalized_name]
+
+    def register(self, name: str, provider: BaseProvider) -> None:
+        normalized_name = name.strip().lower()
+        if not normalized_name:
+            raise ValueError("Provider name cannot be empty.")
+        self._instances[normalized_name] = provider
+
+    async def unregister(self, name: str) -> None:
+        provider = self._instances.pop(name.strip().lower(), None)
+        if provider is not None:
+            await provider.close()
 
     async def health(self, provider: str) -> bool:
         return await self.provider(provider).health()

@@ -1,0 +1,30 @@
+# Linlin Agent 的 Linux Docker 測試工具鏈。
+#
+# 此檔刻意放在正式 Git 專案外，避免 P24 工作樹因建立測試環境而產生額外變更。
+# 所有套件只使用 conda-forge；這些是免費且可在本機 Docker 中使用的開源工具。
+name: Linlin-Agent
+
+channels:
+  # 僅使用 conda-forge，避免 Docker 建置意外混用其他付費或需要額外授權的頻道。
+  - conda-forge
+
+dependencies:
+  # 後端 pyproject.toml 要求 Python 3.12 以上；固定主次版本以維持相容性。
+  - python=3.12
+  - pip
+
+  # Node.js 24 是此沙盒採用的 LTS 主版本，用於前端 build 與 lint。
+  - nodejs=24
+
+  # Rust、CMake、Ninja 與 pkg-config 用於 Cargo/Tauri 的編譯與檢查。
+  - rust
+  - cmake
+  - ninja
+  - pkg-config
+
+  # 專案既有環境所需的跨平台基礎工具與函式庫。
+  - ffmpeg
+  - openssl
+  - sqlite
+  - git
+
